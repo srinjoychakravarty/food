@@ -8,8 +8,8 @@ import { errMsgs, getHome, convertError, } from './services';
     const loginAreaEl = document.querySelector('.login-area');
     const errorEl = document.querySelector('.error');
     const outputEl = document.querySelector('.output');
-
     const loggedInUserEl = document.querySelector('.logged-in-user');
+    const logoutAreaEl = document.querySelector('.logout-area');
 
     let loggedIn;
     let userName;
@@ -17,6 +17,13 @@ import { errMsgs, getHome, convertError, } from './services';
     function showContent() {
       document.querySelector('.login-page').hidden = true;
       document.querySelector('.item-list').hidden = false;
+    }
+
+    function showLogin() {
+      // document.querySelector('.login-page').classList.remove('hidden');
+      // document.querySelector('.item-list').classList.add('hidden');
+      document.querySelector('.login-page').hidden = false;
+      document.querySelector('.item-list').hidden = true;
     }
 
     function renderItems( userName ) {    
@@ -79,7 +86,7 @@ import { errMsgs, getHome, convertError, } from './services';
                     userName = items.username;
                     loggedIn = true;
                     renderItems(userName);
-                    updateStatus(`${userName} logged In Successfully!`, "success");
+                    updateStatus(`${userName} Logged in successfully!`, "success");
                 })
                 .catch( err => {
                   updateStatus(errMsgs[err.error] || err.error, "failure");
@@ -89,6 +96,29 @@ import { errMsgs, getHome, convertError, } from './services';
         });
     }
 
+    function performLogout() {
+      logoutAreaEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('fa-sign-out-alt') ) {
+          console.log('logout button clicked');
+          fetch(`/logout`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+          })
+          .catch( () => Promise.reject( { error: 'network-error' }) )
+          .then( convertError)
+          .then( items => {
+            showLogin();
+            const logoutMessage = items.message;
+            updateStatus(`${logoutMessage} Logged out Successfully!`, "success");
+          })
+          .catch( err => {
+            updateStatus(errMsgs[err.error] || err.error, "failure");
+          });
+        }
+      });
+    }
+  
+    performLogout();
     performLogin();
     populateItems();
     disableLoginWhenEmpty();

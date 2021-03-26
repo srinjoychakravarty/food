@@ -135,12 +135,20 @@ __webpack_require__.r(__webpack_exports__);
   var errorEl = document.querySelector('.error');
   var outputEl = document.querySelector('.output');
   var loggedInUserEl = document.querySelector('.logged-in-user');
+  var logoutAreaEl = document.querySelector('.logout-area');
   var loggedIn;
   var userName;
 
   function showContent() {
     document.querySelector('.login-page').hidden = true;
     document.querySelector('.item-list').hidden = false;
+  }
+
+  function showLogin() {
+    // document.querySelector('.login-page').classList.remove('hidden');
+    // document.querySelector('.item-list').classList.add('hidden');
+    document.querySelector('.login-page').hidden = false;
+    document.querySelector('.item-list').hidden = true;
   }
 
   function renderItems(userName) {
@@ -210,7 +218,7 @@ __webpack_require__.r(__webpack_exports__);
             userName = items.username;
             loggedIn = true;
             renderItems(userName);
-            updateStatus("".concat(userName, " logged In Successfully!"), "success");
+            updateStatus("".concat(userName, " Logged in successfully!"), "success");
           })["catch"](function (err) {
             updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
           });
@@ -219,6 +227,31 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function performLogout() {
+    logoutAreaEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-sign-out-alt')) {
+        console.log('logout button clicked');
+        fetch("/logout", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })["catch"](function () {
+          return Promise.reject({
+            error: 'network-error'
+          });
+        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
+          showLogin();
+          var logoutMessage = items.message;
+          updateStatus("".concat(logoutMessage, " Logged out Successfully!"), "success");
+        })["catch"](function (err) {
+          updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+        });
+      }
+    });
+  }
+
+  performLogout();
   performLogin();
   populateItems();
   disableLoginWhenEmpty();

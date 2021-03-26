@@ -6,11 +6,9 @@ const { v4: uuidv4 } = require('uuid');
 app.use(express.static('./public'));
 app.use(cookieParser());
 
-
 const helper = require('./helper');
 
 app.use(helper.ignoreFavicon);
-
   
 const sample_item_names = ["Hoodies", "Sweatpants", "Pullovers"];
 const cookieIdentifiers = {};
@@ -56,17 +54,21 @@ app.post('/login', express.json(), (req, res) => {
   } else {
     const session_cookie = uuidv4(); // creates uuid
     cookieIdentifiers[session_cookie] = username;
-    
-    res.cookie('sessionCookie', session_cookie);  // assigns uuid to cookie 
-        
+    res.cookie('sessionCookie', session_cookie);  // assigns uuid to cookie      
     console.log("Username OK!")
     res.status(200).json({'username': username});
+    console.log(cookieIdentifiers);
   }
-
-  
-
 });
 
+app.post('/logout', express.json(), (req, res) => {
+  const sessionCookie = req.cookies.sessionCookie;
+  delete cookieIdentifiers[sessionCookie];
+  res.clearCookie('sessionCookie');
+  res.cookie("sessionCookie", {expires: Date.now()});
+  res.json({'message': "Logged out successfuly"});
+  console.log(cookieIdentifiers);
+});
 
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
