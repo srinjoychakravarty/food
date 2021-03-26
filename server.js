@@ -24,7 +24,7 @@ function isValidUUID(receivedCookie) {
   return validityConsensus;
 }
 
-app.get('/items/', (req, res) => {
+app.get('/home', (req, res) => {
   const receivedCookie = req.cookies.sessionCookie;
   const username = cookieIdentifiers[receivedCookie];
   console.log(`Username Logged In: ${username}`);

@@ -38,7 +38,7 @@ var errMsgs = {
 //new one
 
 var getHome = function getHome() {
-  return fetch('/items/', {
+  return fetch('/home', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -125,7 +125,6 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services */ "./src/services.js");
-// import { triggerLoginService, convertError, errMsgs } from './services';
 
 
 (function iife() {
@@ -163,40 +162,15 @@ __webpack_require__.r(__webpack_exports__);
 
   function populateItems() {
     (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (items) {
-      console.log('ut');
-      console.log(items);
-      console.table(items);
       loggedIn = items.loggedIn;
-      console.log(loggedIn);
       userName = items.username;
-      console.log("Username: ".concat(userName));
       renderItems(userName);
     })["catch"](function (err) {
       updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error);
     });
   }
 
-  ; // }
-  // function populateItems() {
-  //     fetch('/items/', {
-  //         method: 'GET',
-  //         headers: {'Content-Type': 'application/json'},
-  //     })
-  //     .catch( () => Promise.reject( { error: 'network-error' }) )
-  //     .then( convertError)
-  //     .then( items => {
-  //         console.log(items)
-  //         console.table(items);
-  //         loggedIn = items.loggedIn;
-  //         console.log(loggedIn);
-  //         userName = items.username;
-  //         console.log(`Username: ${userName}`);
-  //         renderItems(userName);
-  //     })
-  //     .catch( err => {
-  //     updateStatus(errMsgs[err.error] || err.error);
-  //     });
-  // }
+  ;
 
   function updateStatus(message, status) {
     if (status == "success") {
@@ -233,7 +207,6 @@ __webpack_require__.r(__webpack_exports__);
             });
           }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
             showContent();
-            console.log(items);
             userName = items.username;
             loggedIn = true;
             renderItems(userName);
