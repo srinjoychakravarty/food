@@ -1,0 +1,42 @@
+.warn {
+    color: #756e15;
+    background: #fffbd1;
+    border: 1px solid #87803e;
+    margin-bottom: 12px;
+    width: 55%;
+  }
+
+.error {
+  padding-top: 12px;
+  color: rgb(209, 127, 127);
+}
+  
+.output {
+  padding-top: 12px;
+  color: rgb(53, 155, 139);
+}
+
+.login-btn {
+    background-color: #757575;
+    border: none;
+    color: white;
+    padding: 3px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-btn:disabled {
+    color: #c2c2c2;
+    cursor: not-allowed;
+  }
+  
+  .login-btn:hover:enabled {
+    background-color: #fdfdfd; /* Green */
+    color: #757575;
+    border: 1px solid #757575;
+  }
