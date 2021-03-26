@@ -49,8 +49,7 @@
   form {
     margin-top: 20px;
     border-radius: 5px;
-    max-width:700px;
-    width:100%;
+    width:300px;
     background-color: #FFFFFF;
     overflow: hidden;
   }
@@ -65,4 +64,30 @@
     line-height: 2;
     color:#333;
   }
+
+  i {
+    color:#757575;
+  }
+
+  .contentform {
+    padding: 30px 30px;
+  }
+
+  .bouton-contact{
+    background-color:  rgb(53, 155, 139);
+    color: #FFF;
+    text-align: center;
+    width: 100px;
+    border:0;
+    padding: 8px 12px;
+    border-radius: 0px 0px 5px 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+
+
+
+  
   
