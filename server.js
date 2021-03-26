@@ -17,10 +17,27 @@ const cookieIdentifiers = {};
 
 console.log(sample_item_names);
 
+function isValidUUID(receivedCookie) {
+  const validUUIDv4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  let validityConsensus = validUUIDv4Pattern.test(receivedCookie);
+  console.log(`Validity Consensus: ${validityConsensus}`);
+  return validityConsensus;
+}
+
 app.get('/items/', (req, res) => {
   const receivedCookie = req.cookies.sessionCookie;
+  const username = cookieIdentifiers[receivedCookie];
+  console.log(`Username Logged In: ${username}`);
   console.log(`Received Cookie: ${receivedCookie}`);
-  res.json(sample_item_names);
+  if(!receivedCookie) {
+    res.status(200).json({'loggedIn': false});
+  } else if (!isValidUUID(receivedCookie) ) {
+    res.status(401).json({ error: 'Unauthorized: Please login to view inventory!' });
+  } else {
+    console.log('Valid UUID as Session Cookie!');
+    // res.json(inventory["items"]);
+    res.status(200).json({'loggedIn': true, 'username': username});
+  }
 });
 
 app.post('/login', express.json(), (req, res) => {
@@ -38,7 +55,6 @@ app.post('/login', express.json(), (req, res) => {
     res.status(401).json({error: 'Unauthorized: Dogs cannot maintain inventories!'});
   } else {
     const session_cookie = uuidv4(); // creates uuid
-    console.log(`Session Cookie: ${session_cookie}`);
     cookieIdentifiers[session_cookie] = username;
     
     res.cookie('sessionCookie', session_cookie);  // assigns uuid to cookie 

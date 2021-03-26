@@ -11,19 +11,27 @@ import { triggerLoginService, convertError, errMsgs } from './services';
 
     const loggedInUserEl = document.querySelector('.logged-in-user');
 
-    let loggedIn = false;
-    let loggedInUser;
+    let loggedIn;
+    let userName;
 
-    function renderItems( items ) {    
-        const html =  Object.values(items).map(
-          (item) => `
-              <li>
-                ${item}
-              </li>`
-        ).join('');
-        listEl.innerHTML = html;
+    function showContent() {
+      document.querySelector('.login-page').hidden = true;
+      document.querySelector('.item-list').hidden = false;
+    }
+
+    function renderItems( userName ) {    
+        // const html =  Object.values(username).map(
+        //   (username) => `
+        //       <li>
+        //         ${username}
+        //       </li>`
+        // ).join('');
+        // listEl.innerHTML = html;
+        console.log(`Global Logged In Variable: ${loggedIn}`);
         if (loggedIn) {
-          loggedInUserEl.innerHTML = `Welcome, ${loggedInUser}`;
+          console.log("I antered the right if");
+          loggedInUserEl.innerHTML = `Welcome, ${userName}`;
+          showContent();
         }
     }
 
@@ -37,7 +45,11 @@ import { triggerLoginService, convertError, errMsgs } from './services';
         .then( items => {
             console.log(items)
             console.table(items);
-            renderItems(items);
+            loggedIn = items.loggedIn;
+            console.log(loggedIn);
+            userName = items.username;
+            console.log(`Username: ${userName}`);
+            renderItems(userName);
         })
         .catch( err => {
         updateStatus(errMsgs[err.error] || err.error);
@@ -58,12 +70,7 @@ import { triggerLoginService, convertError, errMsgs } from './services';
       });
     }
 
-    function showContent() {
-        // document.querySelector('.login-page').classList.add('hidden');
-        // document.querySelector('.item-list').classList.remove('hidden');
-        document.querySelector('.login-page').hidden = true;
-        document.querySelector('.item-list').hidden = false;
-    }
+
 
     function performLogin() {
         loginAreaEl.addEventListener('click', (e) => {
@@ -81,11 +88,10 @@ import { triggerLoginService, convertError, errMsgs } from './services';
                 .then( items => {
                     showContent();
                     console.log(items);
-                    let userName = items.username;
-                    loggedInUser = userName;
+                    userName = items.username;
                     loggedIn = true;
-                    console.log(loggedInUser);
-                    renderItems(loggedInUser);
+
+                    renderItems(userName);
                     updateStatus(`${userName} logged In Successfully!`, "success");
                 })
                 .catch( err => {

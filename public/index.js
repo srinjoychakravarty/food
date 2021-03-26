@@ -135,17 +135,28 @@ __webpack_require__.r(__webpack_exports__);
   var errorEl = document.querySelector('.error');
   var outputEl = document.querySelector('.output');
   var loggedInUserEl = document.querySelector('.logged-in-user');
-  var loggedIn = false;
-  var loggedInUser;
+  var loggedIn;
+  var userName;
 
-  function renderItems(items) {
-    var html = Object.values(items).map(function (item) {
-      return "\n              <li>\n                ".concat(item, "\n              </li>");
-    }).join('');
-    listEl.innerHTML = html;
+  function showContent() {
+    document.querySelector('.login-page').hidden = true;
+    document.querySelector('.item-list').hidden = false;
+  }
+
+  function renderItems(userName) {
+    // const html =  Object.values(username).map(
+    //   (username) => `
+    //       <li>
+    //         ${username}
+    //       </li>`
+    // ).join('');
+    // listEl.innerHTML = html;
+    console.log("Global Logged In Variable: ".concat(loggedIn));
 
     if (loggedIn) {
-      loggedInUserEl.innerHTML = "Welcome, ".concat(loggedInUser);
+      console.log("I antered the right if");
+      loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
+      showContent();
     }
   }
 
@@ -162,7 +173,11 @@ __webpack_require__.r(__webpack_exports__);
     }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
       console.log(items);
       console.table(items);
-      renderItems(items);
+      loggedIn = items.loggedIn;
+      console.log(loggedIn);
+      userName = items.username;
+      console.log("Username: ".concat(userName));
+      renderItems(userName);
     })["catch"](function (err) {
       updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error);
     });
@@ -180,13 +195,6 @@ __webpack_require__.r(__webpack_exports__);
     usernameBox.addEventListener('input', function (evt) {
       loginButton.disabled = false;
     });
-  }
-
-  function showContent() {
-    // document.querySelector('.login-page').classList.add('hidden');
-    // document.querySelector('.item-list').classList.remove('hidden');
-    document.querySelector('.login-page').hidden = true;
-    document.querySelector('.item-list').hidden = false;
   }
 
   function performLogin() {
@@ -211,11 +219,9 @@ __webpack_require__.r(__webpack_exports__);
           }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
             showContent();
             console.log(items);
-            var userName = items.username;
-            loggedInUser = userName;
+            userName = items.username;
             loggedIn = true;
-            console.log(loggedInUser);
-            renderItems(loggedInUser);
+            renderItems(userName);
             updateStatus("".concat(userName, " logged In Successfully!"), "success");
           })["catch"](function (err) {
             updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
