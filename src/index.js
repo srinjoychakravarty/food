@@ -1,4 +1,5 @@
-import { triggerLoginService, convertError, errMsgs } from './services';
+// import { triggerLoginService, convertError, errMsgs } from './services';
+import { errMsgs, getHome, convertError, } from './services';
 
 (function iife() {
 
@@ -36,25 +37,44 @@ import { triggerLoginService, convertError, errMsgs } from './services';
     }
 
     function populateItems() {
-        fetch('/items/', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-        })
-        .catch( () => Promise.reject( { error: 'network-error' }) )
-        .then( convertError)
-        .then( items => {
-            console.log(items)
-            console.table(items);
-            loggedIn = items.loggedIn;
-            console.log(loggedIn);
-            userName = items.username;
-            console.log(`Username: ${userName}`);
-            renderItems(userName);
-        })
-        .catch( err => {
-        updateStatus(errMsgs[err.error] || err.error);
-        });
-    }
+      getHome()
+      .then( items => {
+          console.log('ut')
+          console.log(items)
+          console.table(items);
+          loggedIn = items.loggedIn;
+          console.log(loggedIn);
+          userName = items.username;
+          console.log(`Username: ${userName}`);
+          renderItems(userName);
+      })
+      .catch( err => {
+      updateStatus(errMsgs[err.error] || err.error);
+      });
+};
+  
+    // }
+
+    // function populateItems() {
+    //     fetch('/items/', {
+    //         method: 'GET',
+    //         headers: {'Content-Type': 'application/json'},
+    //     })
+    //     .catch( () => Promise.reject( { error: 'network-error' }) )
+    //     .then( convertError)
+    //     .then( items => {
+    //         console.log(items)
+    //         console.table(items);
+    //         loggedIn = items.loggedIn;
+    //         console.log(loggedIn);
+    //         userName = items.username;
+    //         console.log(`Username: ${userName}`);
+    //         renderItems(userName);
+    //     })
+    //     .catch( err => {
+    //     updateStatus(errMsgs[err.error] || err.error);
+    //     });
+    // }
 
     function updateStatus( message, status ) {
         if (status == "success") {

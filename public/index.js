@@ -10,11 +10,45 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "convertError": () => (/* binding */ convertError),
 /* harmony export */   "errMsgs": () => (/* binding */ errMsgs),
-/* harmony export */   "triggerLoginService": () => (/* binding */ triggerLoginService),
-/* harmony export */   "getLogIn": () => (/* binding */ getLogIn)
+/* harmony export */   "getHome": () => (/* binding */ getHome),
+/* harmony export */   "convertError": () => (/* binding */ convertError)
 /* harmony export */ });
+var errMsgs = {
+  'duplicate': 'That name already exists!\nPlease enter a new item... I am confused sir',
+  'network-error': 'Request Timeout: Server seems to be down!'
+}; // export const triggerLoginService = ( enteredUsername ) => {
+//     return fetch(`/login`, {
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json'},
+//         body : JSON.stringify({userName: enteredUsername}),
+//     })
+//     .catch( () => Promise.reject( { error: 'network-error' }) )
+//     .then( convertError)
+// };
+// export const getLogIn = (chefName) => {
+//     return fetch('/session', {
+//         method: 'POST',
+//         headers: new Headers({'content-type': 'application/json'}),
+//         body: JSON.stringify({ chefName }),
+//     })
+//     .catch( () => { return Promise.reject({code: 'network-error'});})
+//     .then( (convertError)) 
+// };
+//new one
+
+var getHome = function getHome() {
+  return fetch('/items/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })["catch"](function () {
+    return Promise.reject({
+      code: 'network-error'
+    });
+  }).then(convertError);
+};
 var convertError = function convertError(response) {
   if (response.ok) {
     return response.json();
@@ -23,40 +57,6 @@ var convertError = function convertError(response) {
   return response.json().then(function (err) {
     return Promise.reject(err);
   });
-};
-var errMsgs = {
-  'duplicate': 'That name already exists!\nPlease enter a new item... I am confused sir',
-  'network-error': 'Request Timeout: Server seems to be down!'
-};
-var triggerLoginService = function triggerLoginService(enteredUsername) {
-  return fetch("/login", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      userName: enteredUsername
-    })
-  })["catch"](function () {
-    return Promise.reject({
-      error: 'network-error'
-    });
-  }).then(convertError);
-};
-var getLogIn = function getLogIn(chefName) {
-  return fetch('/session', {
-    method: 'POST',
-    headers: new Headers({
-      'content-type': 'application/json'
-    }),
-    body: JSON.stringify({
-      chefName: chefName
-    })
-  })["catch"](function () {
-    return Promise.reject({
-      code: 'network-error'
-    });
-  }).then(convertError);
 };
 
 /***/ })
@@ -125,6 +125,7 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services */ "./src/services.js");
+// import { triggerLoginService, convertError, errMsgs } from './services';
 
 
 (function iife() {
@@ -161,16 +162,8 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function populateItems() {
-    fetch('/items/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })["catch"](function () {
-      return Promise.reject({
-        error: 'network-error'
-      });
-    }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
+    (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (items) {
+      console.log('ut');
       console.log(items);
       console.table(items);
       loggedIn = items.loggedIn;
@@ -182,6 +175,28 @@ __webpack_require__.r(__webpack_exports__);
       updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error);
     });
   }
+
+  ; // }
+  // function populateItems() {
+  //     fetch('/items/', {
+  //         method: 'GET',
+  //         headers: {'Content-Type': 'application/json'},
+  //     })
+  //     .catch( () => Promise.reject( { error: 'network-error' }) )
+  //     .then( convertError)
+  //     .then( items => {
+  //         console.log(items)
+  //         console.table(items);
+  //         loggedIn = items.loggedIn;
+  //         console.log(loggedIn);
+  //         userName = items.username;
+  //         console.log(`Username: ${userName}`);
+  //         renderItems(userName);
+  //     })
+  //     .catch( err => {
+  //     updateStatus(errMsgs[err.error] || err.error);
+  //     });
+  // }
 
   function updateStatus(message, status) {
     if (status == "success") {
