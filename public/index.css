@@ -87,7 +87,11 @@
     font-size: 12px;
   }
 
-
+  .fa-sign-out-alt {
+    color: #757575;
+    padding-left: 201px;
+    cursor: pointer;
+  }
 
   
   
