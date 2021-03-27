@@ -281,7 +281,8 @@ __webpack_require__.r(__webpack_exports__);
             userName = items.username;
             loggedIn = true;
             renderItems(userName);
-            updateStatus("".concat(userName, " Logged in successfully!"), "success");
+            var loginMessage = items.message;
+            updateStatus(loginMessage, "success");
           })["catch"](function (err) {
             updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
           });
@@ -305,7 +306,7 @@ __webpack_require__.r(__webpack_exports__);
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
           showLogin();
           var logoutMessage = items.message;
-          updateStatus("".concat(logoutMessage, " Logged out Successfully!"), "success");
+          updateStatus(logoutMessage, "success");
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
         });

@@ -20,26 +20,26 @@ let authors = ["Jamie Oliver", "Gordon Ramsey"];
 
 let ingredients = [["4 skinned boned chicken thighs", "Lemon Vinaigrette", "1 cup uncooked farro", 
 "2 ¼ teaspoons kosher salt", "2 garlic cloves"], ["¾ teaspoon black pepper", "½ red onion", "1 fennel bulb", 
-"10 sweet mini peppers", "1 ½ teaspoons olive oil", "½ cup loosely packed fresh flat-leaf parsley leaves",
+"10 sweet mini peppers", "1 ½ teaspoons olive oil", "½ cup loosely packed parsley",
 "⅓ cup torn fresh basil leaves", "1 tablespoon fresh thyme leaves"]];
 
-let instructions = [["Place chicken and 1/4 cup Lemon Vinaigrette in a 1-gal.", 
+let instructions = [["Place chicken and 1/4 cup Lemon.", 
 "Zip-top plastic freezer bag.", 
 "Seal and turn to coat.", 
 "Chill 30 minutes.", 
-"Reserve and chill remaining vinaigrette.",
-"Meanwhile, cook farro according to package directions.", 
-"Drain and rinse; discard garlic, and transfer farro to a large bowl.",
-"Preheat grill to 350° to 400° (medium-high) heat."], 
-["Remove chicken from marinade, discarding marinade in bag.", 
-"Sprinkle chicken with 1/4 tsp. each salt and black pepper.", 
-"Grill chicken, covered with grill lid, 4 to 5 minutes on each side.", 
+"Reserve and chill vinaigrette.",
+"Meanwhile, cook farro.", 
+"Drain and rinse; discard garlic.",
+"Preheat grill to 350° to 400°."], 
+["Remove chicken from marinade.", 
+"Sprinkle chicken with 1/4 tsp.", 
+"Grill chicken, covered with grill lid.", 
 "Transfer to a platter; cover with foil.",
-"Toss together onion, next 3 ingredients, and remaining 1 tsp. salt.", 
-"Place vegetables in a large grill basket, and grill.", 
-"Transfer vegetables to bowl, and cover with foil.",
-"Coarsely chop chicken; toss with farro, vegetables, parsley, basil, thyme.", 
-"Season with salt and pepper, and serve with remaining vinaigrette."]];
+"Toss together onion & salt.", 
+"Place vegetables in a large grill.", 
+"Transfer vegetables to bowl.",
+"Coarsely chop chicken.", 
+"Season with salt and pepper."]];
 
 const recipeObjects = {};
 const cookieIdentifiers = {};
@@ -80,17 +80,18 @@ app.post('/login', express.json(), (req, res) => {
     cookieIdentifiers[session_cookie] = username;
     res.cookie('sessionCookie', session_cookie);       
     console.log("Username OK!")
-    res.status(200).json({'username': username});
+    res.status(200).json({'username': username, 'message': `${username} logged in successfully`});
     console.log(cookieIdentifiers);
   }
 });
 
 app.post('/logout', express.json(), (req, res) => {
   const sessionCookie = req.cookies.sessionCookie;
+  let userName = cookieIdentifiers[sessionCookie];
   delete cookieIdentifiers[sessionCookie];
   res.clearCookie('sessionCookie');
   res.cookie("sessionCookie", {expires: Date.now()});
-  res.json({'message': "Logged out successfuly"});
+  res.json({'message': `${userName} logged out successfully`});
   console.log(cookieIdentifiers);
 });
 

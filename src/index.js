@@ -163,7 +163,8 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                     userName = items.username;
                     loggedIn = true;
                     renderItems(userName);
-                    updateStatus(`${userName} Logged in successfully!`, "success");
+                    const loginMessage = items.message;
+                    updateStatus(loginMessage, "success");
                 })
                 .catch( err => {
                   updateStatus(errMsgs[err.error] || err.error, "failure");
@@ -185,7 +186,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .then( items => {
             showLogin();
             const logoutMessage = items.message;
-            updateStatus(`${logoutMessage} Logged out Successfully!`, "success");
+            updateStatus(logoutMessage, "success");
           })
           .catch( err => {
             updateStatus(errMsgs[err.error] || err.error, "failure");
