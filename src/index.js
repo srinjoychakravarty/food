@@ -19,7 +19,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     const logoutAreaEl = document.querySelector('.logout-area');
     const loginPageEl = document.querySelector('.login-page');
     const createRecipeEl = document.querySelector('.create-recipe');
-    const recipeListEl = document.querySelector('.recipe-list');
+    const storedRecipesEl = document.querySelector('.recipe-cards');
 
     const bodyEl = document.querySelector('.spa');
 
@@ -30,7 +30,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     let userName;
 
     function enableRecipeCreation() {
-      bodyEl.addEventListener('click', event => {
+      bodyEl.addEventListener('input', event => {
         if (titleBox.value != "" && authorBox.value !== "" && ingredientsBox.value !== "" && instructionsBox.value !== "") {
           recipeButton.disabled = false;
         }
@@ -69,7 +69,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                           </section>
                       </section>`).join('');                    
 
-      document.querySelector('.recipe-list').innerHTML = testHTML;
+                      storedRecipesEl.innerHTML = testHTML;
     }
 
     function submitRecipe() {
@@ -104,7 +104,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       logoutAreaEl.hidden = false;
       createRecipeEl.hidden = false;
       loginPageEl.hidden = true;
-      recipeListEl.hidden = false;
+      storedRecipesEl.hidden = false;
     }
 
     function showLogin() {
@@ -112,7 +112,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       logoutAreaEl.hidden = true;
       createRecipeEl.hidden = true;
       loginPageEl.hidden = false;
-      recipeListEl.hidden = true;
+      storedRecipesEl.hidden = true;
     }
 
     function populateItems() {

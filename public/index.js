@@ -143,7 +143,7 @@ __webpack_require__.r(__webpack_exports__);
   var logoutAreaEl = document.querySelector('.logout-area');
   var loginPageEl = document.querySelector('.login-page');
   var createRecipeEl = document.querySelector('.create-recipe');
-  var recipeListEl = document.querySelector('.recipe-list');
+  var storedRecipesEl = document.querySelector('.recipe-cards');
   var bodyEl = document.querySelector('.spa');
   var cardRight = document.querySelector('.card.right');
   var cardLeft = document.querySelector('.card.left');
@@ -151,7 +151,7 @@ __webpack_require__.r(__webpack_exports__);
   var userName;
 
   function enableRecipeCreation() {
-    bodyEl.addEventListener('click', function (event) {
+    bodyEl.addEventListener('input', function (event) {
       if (titleBox.value != "" && authorBox.value !== "" && ingredientsBox.value !== "" && instructionsBox.value !== "") {
         recipeButton.disabled = false;
       }
@@ -175,7 +175,7 @@ __webpack_require__.r(__webpack_exports__);
         return "<li> \n                                                  ".concat(instruction, " \n                                                </li>");
       }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
     }).join('');
-    document.querySelector('.recipe-list').innerHTML = testHTML;
+    storedRecipesEl.innerHTML = testHTML;
   }
 
   function submitRecipe() {
@@ -216,7 +216,7 @@ __webpack_require__.r(__webpack_exports__);
     logoutAreaEl.hidden = false;
     createRecipeEl.hidden = false;
     loginPageEl.hidden = true;
-    recipeListEl.hidden = false;
+    storedRecipesEl.hidden = false;
   }
 
   function showLogin() {
@@ -224,7 +224,7 @@ __webpack_require__.r(__webpack_exports__);
     logoutAreaEl.hidden = true;
     createRecipeEl.hidden = true;
     loginPageEl.hidden = false;
-    recipeListEl.hidden = true;
+    storedRecipesEl.hidden = true;
   }
 
   function populateItems() {
