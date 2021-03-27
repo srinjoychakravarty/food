@@ -73,7 +73,7 @@
     padding: 30px 30px;
   }
 
-  .bouton-contact{
+  .form-btn:hover:enabled{
     background-color:  rgb(53, 155, 139);
     color: #FFF;
     text-align: center;
@@ -85,6 +85,21 @@
     margin-top: 10px;
     margin-left: 5px;
     font-size: 12px;
+  }
+
+  .form-btn:disabled {
+    background-color:  rgb(109, 202, 188);
+    color: #FFF;
+    text-align: center;
+    width: 100px;
+    border:0;
+    padding: 8px 12px;
+    border-radius: 0px 0px 5px 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 12px;
+    cursor: not-allowed;
   }
 
   .fa-sign-out-alt {
