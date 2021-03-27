@@ -54,42 +54,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
   
 
     function showRecipeLibrary(recipeObjects, recipeIDArray) {
-      // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));
-
-      // let recipeTitles = recipeIDArray.forEach(recipe => recipeObjects[recipe]);
-      // console.log(recipeTitles);
-
-      // let recipeTitles = [];
-      // for (const recipe of recipeIDArray) {
-      //   recipeTitles.push(recipeObjects[recipe].title);
-      // }
-      // console.log(recipeTitles);
-
-      // const titlesHTML = recipeTitles.map(
-      //   (title) => `<li> 
-      //               ${title} 
-      //             </li>`).join('');
-
-      //document.querySelector('.bobo').innerHTML = titlesHTML;
-
-      let recipes = [];
-      for (const recipe of recipeIDArray) {
-        recipes.push(recipeObjects[recipe].ingredients);
-      }
-      // console.log(recipes);
-
-      let ingredientsListItemsHTML = [];
-
-      for (const recipe of recipes) {
-        const unorderedListHTML = recipe.map(
-          (ingredient) => `<li> 
-                        ${ingredient} 
-                      </li>`).join('');
-
-        ingredientsListItemsHTML.push(unorderedListHTML);
-      }
-
-      console.log(ingredientsListItemsHTML);
       
       const testHTML = recipeIDArray.map(
         (recipeID) => `<section class="card right">
@@ -97,33 +61,22 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                             <h3>${recipeObjects[recipeID].title}</h3>
                             <h4>by ${recipeObjects[recipeID].author}</h4>
                             <h5>Ingredients</h5>
-                            <ul>${ingredientsListItemsHTML}</ul>
+                            <ul>${recipeObjects[recipeID].ingredients.map(
+                              (ingredient) => `<li> 
+                                                  ${ingredient} 
+                                                </li>`).join('')}
+                            </ul>
+                            <h5>Instructions</h5>
+                            <ol>${recipeObjects[recipeID].instructions.map(
+                              (instruction) => `<li> 
+                                                  ${instruction} 
+                                                </li>`).join('')}
+                            </ol>
+                            <h6>Submitted by: ${recipeObjects[recipeID].uploaded_by}</h6>
                           </section>
-                      </section>`).join('');
-      
+                      </section>`).join('');                    
+
       document.querySelector('.bobo').innerHTML = testHTML;
-
-      //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
-
-      // document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title')
-      // const cardHTML = recipeIDArray.forEach(
-      //   recipe => `
-      //   <section class="container">
-      //   <h3>${recipeObjects[recipe].title}</h3>
-      //   <h4>by ${recipeObjects[recipe].author}</h4>
-      //   <h5>Ingredients</h5>
-      //   <h6>Submitted by: ${recipeObjects[recipe].username}</h6>
-      // </section>
-      //   `);
-
-
-      // const title = recipeIDArray.forEach(
-      //   recipe => `
-      //   <h3>
-      //     ${recipeObjects[recipe].title}
-      //   </h3>`);
-
-      // document.querySelector('.card.right').innerHTML = title;
     }
 
     function submitRecipe() {
