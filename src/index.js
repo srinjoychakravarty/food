@@ -38,20 +38,11 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     }
 
     function renderItems( userName ) {    
-      // const html =  Object.values(username).map(
-      //   (username) => `
-      //       <li>
-      //         ${username}
-      //       </li>`
-      // ).join('');
-      // listEl.innerHTML = html;
       if (loggedIn) {
         loggedInUserEl.innerHTML = `Welcome, ${userName}`;
         showContent();
       }
-  }
-
-  
+    }
 
     function showRecipeLibrary(recipeObjects, recipeIDArray) {
       let cardLeft = "card left";
@@ -97,6 +88,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .then( convertError)
           .then( recipeObjects => {
             let recipeIDArray = Object.keys(recipeObjects);
+            outputEl.innerHTML = "";
             showRecipeLibrary(recipeObjects, recipeIDArray);
           })
           .catch( err => {
@@ -106,7 +98,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
         } 
       });
     }
-
 
     function showContent() {
       loggedInUserEl.hidden = false;
@@ -149,8 +140,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
         loginButton.disabled = false;
       });
     }
-
-
 
     function performLogin() {
         loginAreaEl.addEventListener('click', (e) => {

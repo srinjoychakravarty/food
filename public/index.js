@@ -159,13 +159,6 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function renderItems(userName) {
-    // const html =  Object.values(username).map(
-    //   (username) => `
-    //       <li>
-    //         ${username}
-    //       </li>`
-    // ).join('');
-    // listEl.innerHTML = html;
     if (loggedIn) {
       loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
       showContent();
@@ -209,6 +202,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
           var recipeIDArray = Object.keys(recipeObjects);
+          outputEl.innerHTML = "";
           showRecipeLibrary(recipeObjects, recipeIDArray);
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
