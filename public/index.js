@@ -202,7 +202,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
           var recipeIDArray = Object.keys(recipeObjects);
-          outputEl.innerHTML = "";
+          showRecipesHome();
           showRecipeLibrary(recipeObjects, recipeIDArray);
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
@@ -211,12 +211,17 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function showRecipesHome() {
+    outputEl.innerHTML = "";
+    createRecipeEl.hidden = true;
+    storedRecipesEl.hidden = false;
+  }
+
   function showContent() {
     loggedInUserEl.hidden = false;
     logoutAreaEl.hidden = false;
     createRecipeEl.hidden = false;
     loginPageEl.hidden = true;
-    storedRecipesEl.hidden = false;
   }
 
   function showLogin() {

@@ -88,7 +88,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .then( convertError)
           .then( recipeObjects => {
             let recipeIDArray = Object.keys(recipeObjects);
-            outputEl.innerHTML = "";
+            showRecipesHome();
             showRecipeLibrary(recipeObjects, recipeIDArray);
           })
           .catch( err => {
@@ -99,12 +99,17 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
+    function showRecipesHome() {
+      outputEl.innerHTML = "";
+      createRecipeEl.hidden = true;
+      storedRecipesEl.hidden = false;
+    }
+
     function showContent() {
       loggedInUserEl.hidden = false;
       logoutAreaEl.hidden = false;
       createRecipeEl.hidden = false;
       loginPageEl.hidden = true;
-      storedRecipesEl.hidden = false;
     }
 
     function showLogin() {
@@ -188,7 +193,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
         }
       });
     }
-    
+
     submitRecipe();
     enableRecipeCreation();
     performLogout();
