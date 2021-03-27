@@ -47,8 +47,6 @@ const cookieIdentifiers = {};
 recipeObjects[itemIDs[0]] = {'uploaded_by': usernames[0], 'title': titles[0], 'author': authors[0], 'ingredients': ingredients[0], 'instructions': instructions[0]};
 recipeObjects[itemIDs[1]] = {'uploaded_by': usernames[1], 'title': titles[1], 'author': authors[1], 'ingredients': ingredients[1], 'instructions': instructions[1]};
 
-console.log(recipeObjects);
-
 app.get('/home', (req, res) => {
   const receivedCookie = req.cookies.sessionCookie;
   const username = cookieIdentifiers[receivedCookie];

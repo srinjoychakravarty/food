@@ -43,12 +43,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           const rawIngredients = ingredientsBox.value;
           const rawInstructions = instructionsBox.value;
           
-          console.log(`Title: ${rawtitle}`);
-          console.log(`Author: ${rawAuthor}`);
-          console.log(`Ingredients: ${rawIngredients}`);
-          console.log(`Instructions: ${rawInstructions}`);
-          console.log('create recipe button clicked!');
-
           fetch(`/recipe`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -56,7 +50,16 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           })
           .catch( () => Promise.reject( { error: 'network-error' }) )
           .then( convertError)
-          .then( items => {
+          .then( recipeObjects => {
+
+            let recipeIDArray = Object.keys(recipeObjects);
+
+            // for (const recipe of recipeIDArray) {
+            //   console.table(recipeObjects[recipe].author);
+            // }
+
+            // recipeIDArray.forEach(recipe => console.table(recipeObjects[recipe].title));
+
             // renderItems(items);
             // updateStatus('Incremented Quantity by 1!', "success");
           })
@@ -64,7 +67,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
             updateStatus(errMsgs[err.error] || err.error, "failure");
           });
 
-          
         } 
       });
     }

@@ -163,11 +163,6 @@ __webpack_require__.r(__webpack_exports__);
         var rawAuthor = authorBox.value;
         var rawIngredients = ingredientsBox.value;
         var rawInstructions = instructionsBox.value;
-        console.log("Title: ".concat(rawtitle));
-        console.log("Author: ".concat(rawAuthor));
-        console.log("Ingredients: ".concat(rawIngredients));
-        console.log("Instructions: ".concat(rawInstructions));
-        console.log('create recipe button clicked!');
         fetch("/recipe", {
           method: 'POST',
           headers: {
@@ -183,7 +178,12 @@ __webpack_require__.r(__webpack_exports__);
           return Promise.reject({
             error: 'network-error'
           });
-        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {// renderItems(items);
+        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
+          var recipeIDArray = Object.keys(recipeObjects); // for (const recipe of recipeIDArray) {
+          //   console.table(recipeObjects[recipe].author);
+          // }
+          // recipeIDArray.forEach(recipe => console.table(recipeObjects[recipe].title));
+          // renderItems(items);
           // updateStatus('Incremented Quantity by 1!', "success");
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
