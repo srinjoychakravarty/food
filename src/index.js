@@ -18,6 +18,7 @@ import { errMsgs, getHome, convertError, } from './services';
     let userName;
 
     function showContent() {
+      loggedInUserEl.hidden = false;
       logoutAreaEl.hidden = false;
       createRecipeEl.hidden = false;
       loginPageEl.hidden = true;
@@ -25,6 +26,7 @@ import { errMsgs, getHome, convertError, } from './services';
     }
 
     function showLogin() {
+      loggedInUserEl.hidden = true;
       logoutAreaEl.hidden = true;
       createRecipeEl.hidden = true;
       loginPageEl.hidden = false;

@@ -38,7 +38,7 @@ var errMsgs = {
 //new one
 
 var getHome = function getHome() {
-  return fetch('/home', {
+  return fetch('/home/', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -143,6 +143,7 @@ __webpack_require__.r(__webpack_exports__);
   var userName;
 
   function showContent() {
+    loggedInUserEl.hidden = false;
     logoutAreaEl.hidden = false;
     createRecipeEl.hidden = false;
     loginPageEl.hidden = true;
@@ -150,6 +151,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function showLogin() {
+    loggedInUserEl.hidden = true;
     logoutAreaEl.hidden = true;
     createRecipeEl.hidden = true;
     loginPageEl.hidden = false;

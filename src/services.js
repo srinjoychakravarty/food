@@ -27,7 +27,7 @@ export const errMsgs = {
 
 //new one
 export const getHome = () => {
-    return fetch('/home', {
+    return fetch('/home/', {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
       })
