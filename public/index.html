@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<link rel = "icon" href = "https://tinyurl.com/rv9fvcxx" type = "image/x-icon">
-  		<title>Subway Recipes</title>
+  		<title>Recipes</title>
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     	<link rel="stylesheet" href="index.css"/>
 	</head>
@@ -29,26 +29,33 @@
 				<div class="contentform">
 					<div class="form-group">
 						<p>Title<span>*</span></p>
-						<span class="icon-case"><i class="fa fa-male"></i></span>
+						<i class="fas fa-heading"></i>
 						<input type="text" name="nom" id="nom" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Nom' doit être renseigné."/>
 						<div class="validation"></div>
 					</div> 
 					<div class="form-group">
 						<p>Author <span>*</span></p>
-						<span class="icon-case"><i class="fa fa-user"></i></span>
+						
+						<i class="fa fa-user"></i>
 						<input type="text" name="prenom" id="prenom" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Prénom' doit être renseigné."/>
 						<div class="validation"></div>
 					</div>
 					<div class="form-group">
 						<p>Ingredients <span>*</span></p>
-						<span class="icon-case"><i class="fa fa-info"></i></span>
-						<input type="text" name="fonction" id="fonction" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Fonction' doit être renseigné."/>
+						
+						<textarea name="message" rows="8" placeholder="• 12 oz chicken    • 12 cups arugula 
+						1⁄4 cup cranberries
+						1 peeled avocado
+						1⁄4 cup crumbled goat cheese
+						1⁄4 cup walnuts, roughly chopped
+						1⁄4 cup honey mustard vinaigrette
+						Salt and black pepper to taste"></textarea>
 						<div class="validation"></div>
+						<div class="ingredient-tip">Please put 1 ingredient per line</div>
 					</div>
 					<div class="form-group">
 						<p>Instructions <span>*</span></p>
-						<span class="icon-case"><i class="fa fa-comments-o"></i></span>
-						<textarea name="message" rows="7" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Message' doit être renseigné."></textarea>
+						<textarea name="message" rows="8" placeholder="• 1 cup rice         • 2 cups water"></textarea>
 						<div class="validation"></div>
 					</div>  
 				<button class="form-btn" disabled type="button">Create Recipe</button>
