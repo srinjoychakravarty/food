@@ -23,6 +23,9 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
 
     const bodyEl = document.querySelector('.spa');
 
+    const cardRight = document.querySelector('.card.right');
+    const cardLeft = document.querySelector('.card.left');
+
     let loggedIn;
     let userName;
 
@@ -32,6 +35,68 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           recipeButton.disabled = false;
         }
       });
+    }
+
+    function renderItems( userName ) {    
+      // const html =  Object.values(username).map(
+      //   (username) => `
+      //       <li>
+      //         ${username}
+      //       </li>`
+      // ).join('');
+      // listEl.innerHTML = html;
+      if (loggedIn) {
+        loggedInUserEl.innerHTML = `Welcome, ${userName}`;
+        showContent();
+      }
+  }
+
+  
+
+    function showRecipeLibrary(recipeObjects, recipeIDArray) {
+      // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));
+
+      // let recipeTitles = recipeIDArray.forEach(recipe => recipeObjects[recipe]);
+      // console.log(recipeTitles);
+
+      let recipeTitles = [];
+      for (const recipe of recipeIDArray) {
+        recipeTitles.push(recipeObjects[recipe].title);
+        // const titlesHTML = `<li>${recipeObjects[recipe].title}</li>`;
+        // document.querySelector('.bobo').innerHTML = titlesHTML;
+        //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeObjects[recipe].title;
+      }
+      console.log(recipeTitles);
+
+      const titlesHTML = recipeTitles.map(
+        (title) => `<li> 
+                    ${title} 
+                  </li>`).join('');
+
+      document.querySelector('.bobo').innerHTML = titlesHTML;
+
+
+      //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
+
+      // document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title')
+      // const cardHTML = recipeIDArray.forEach(
+      //   recipe => `
+      //   <section class="container">
+      //   <h3>${recipeObjects[recipe].title}</h3>
+      //   <h4>by ${recipeObjects[recipe].author}</h4>
+      //   <h5>Ingredients</h5>
+      //   <h6>Submitted by: ${recipeObjects[recipe].username}</h6>
+      // </section>
+      //   `);
+
+
+      const title = recipeIDArray.forEach(
+        recipe => `
+        <h3>
+          ${recipeObjects[recipe].title}
+        </h3>`);
+
+      document.querySelector('.card.right').innerHTML = title;
     }
 
     function submitRecipe() {
@@ -51,14 +116,15 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .catch( () => Promise.reject( { error: 'network-error' }) )
           .then( convertError)
           .then( recipeObjects => {
-
             let recipeIDArray = Object.keys(recipeObjects);
 
             // for (const recipe of recipeIDArray) {
             //   console.table(recipeObjects[recipe].author);
             // }
 
-            // recipeIDArray.forEach(recipe => console.table(recipeObjects[recipe].title));
+            // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));  
+
+            showRecipeLibrary(recipeObjects, recipeIDArray);
 
             // renderItems(items);
             // updateStatus('Incremented Quantity by 1!', "success");
@@ -86,22 +152,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       createRecipeEl.hidden = true;
       loginPageEl.hidden = false;
       recipeListEl.hidden = true;
-    }
-
-    function renderItems( userName ) {    
-        // const html =  Object.values(username).map(
-        //   (username) => `
-        //       <li>
-        //         ${username}
-        //       </li>`
-        // ).join('');
-        // listEl.innerHTML = html;
-        console.log(`Global Logged In Variable: ${loggedIn}`);
-        if (loggedIn) {
-          console.log("I antered the right if");
-          loggedInUserEl.innerHTML = `Welcome, ${userName}`;
-          showContent();
-        }
     }
 
     function populateItems() {
@@ -135,7 +185,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     function performLogin() {
         loginAreaEl.addEventListener('click', (e) => {
           if(e.target.classList.contains('login-btn') ) {
-            console.log('login button clicked!');
             const enteredUsername = usernameBox.value;
             if(enteredUsername) {
                 fetch(`/login`, {
@@ -163,7 +212,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     function performLogout() {
       logoutAreaEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('fa-sign-out-alt') ) {
-          console.log('logout button clicked');
           fetch(`/logout`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},

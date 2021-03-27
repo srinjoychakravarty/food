@@ -26,36 +26,67 @@
 
 		<article class="create-recipe" hidden>
 			<form name="new-recipe">
-				<div class="contentform">
-					<div class="form-group">
+				<section class="contentform">
+					<section class="form-group">
 						<p>Title<span>*</span></p>
 						<i class="fas fa-heading"></i>
 						<input type="text" name="title" placeholder="Farro Chicken Salad"/>
-					</div> 
-					<div class="form-group">
+					</section> 
+					<section class="form-group">
 						<p>Author <span>*</span></p>
 						<i class="fa fa-user"></i>
 						<input type="text" name="author" placeholder="Jamie Oliver"/>
-					</div>
-					<div class="form-group">
+					</section>
+					<section class="form-group">
 						<p>Ingredients <span>*</span></p>
 						<textarea name="ingredients" rows="4" placeholder="* 12 oz chicken&#10;* 12 cups arugula&#10;* 1⁄4 cup cranberries&#10;* 1/2 avocado sliced&#10;* 1/4 cup walnuts or pecans"></textarea>
-						<div class="ingredient-tip">Put an asterix (*) before each ingredient</div>
-					</div>
-					<div class="form-group">
+						<section class="ingredient-tip">Put an asterix (*) before each ingredient</section>
+					</section>
+					<section class="form-group">
 						<p>Instructions <span>*</span></p>
 						<textarea name="instructions" rows="5" placeholder="* Put salad ingredients in bowl.&#10;* Drizzle dressing & toss light.&#10;* Sit in the shade and enjoy!&#10;* Don’t heat up the kitchen&#10;* Add a protein of your choice" ></textarea>
-						<div class="ingredient-tip">Put an asterix (*) before each instruction</div>
-					</div>  
+						<section class="ingredient-tip">Put an asterix (*) before each instruction</section>
+					</section>  
 				<button class="form-btn" disabled type="button">Create Recipe</button>
 		  	</form> 
 		</article>
-
 		
 		<article class="recipe-list" hidden id="item-app">
-			<ul class="recipes"></ul>
-			<section class="output"> </section>
+			
+			<section class="card left">
+				<section class="container">
+					<h3>Farro Chicken Salad</h3>
+					<h4>by Jamie Oliver</h4>
+					<h5>Ingredients</h5>
+					<ul>
+						<li>Milk</li>
+						<li>Cheese</li>
+						<li>Blue Feta</li>
+						<li>Sour Cream</li>	
+					</ul>
+					<h5>Instructions</h5>
+					<ol>
+						<li>Mix flour, baking powder, sugar, and salt.</li>
+						<li>In another bowl, mix eggs, milk, and oil.</li>
+						<li>Stir both mixtures together.</li>
+						<li>Fill muffin tray 3/4 full.</li>
+						<li>Bake for 20 minutes.</li>
+					</ol>
+					<h6>Submitted by: jame_oliver014</h6>
+				</section>
+			</section>
+			<section class="card right">
+				<section class="container">
+					<h3 class="recipe-title"></h3>
+				</section>
+			</section>
+		
+			<ul class="bobo"></ul>
+				
+
 		</article>
+
+		<section class="output"> </section>
 
 		<section class="error"> </section>
 

@@ -125,6 +125,12 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services */ "./src/services.js");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 (function iife() {
@@ -145,6 +151,8 @@ __webpack_require__.r(__webpack_exports__);
   var createRecipeEl = document.querySelector('.create-recipe');
   var recipeListEl = document.querySelector('.recipe-list');
   var bodyEl = document.querySelector('.spa');
+  var cardRight = document.querySelector('.card.right');
+  var cardLeft = document.querySelector('.card.left');
   var loggedIn;
   var userName;
 
@@ -154,6 +162,64 @@ __webpack_require__.r(__webpack_exports__);
         recipeButton.disabled = false;
       }
     });
+  }
+
+  function renderItems(userName) {
+    // const html =  Object.values(username).map(
+    //   (username) => `
+    //       <li>
+    //         ${username}
+    //       </li>`
+    // ).join('');
+    // listEl.innerHTML = html;
+    if (loggedIn) {
+      loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
+      showContent();
+    }
+  }
+
+  function showRecipeLibrary(recipeObjects, recipeIDArray) {
+    // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));
+    // let recipeTitles = recipeIDArray.forEach(recipe => recipeObjects[recipe]);
+    // console.log(recipeTitles);
+    var recipeTitles = [];
+
+    var _iterator = _createForOfIteratorHelper(recipeIDArray),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var recipe = _step.value;
+        recipeTitles.push(recipeObjects[recipe].title); // const titlesHTML = `<li>${recipeObjects[recipe].title}</li>`;
+        // document.querySelector('.bobo').innerHTML = titlesHTML;
+        //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeObjects[recipe].title;
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+
+    console.log(recipeTitles);
+    var titlesHTML = recipeTitles.map(function (title) {
+      return "<li> \n                    ".concat(title, " \n                  </li>");
+    }).join('');
+    document.querySelector('.bobo').innerHTML = titlesHTML; //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
+    // document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title')
+    // const cardHTML = recipeIDArray.forEach(
+    //   recipe => `
+    //   <section class="container">
+    //   <h3>${recipeObjects[recipe].title}</h3>
+    //   <h4>by ${recipeObjects[recipe].author}</h4>
+    //   <h5>Ingredients</h5>
+    //   <h6>Submitted by: ${recipeObjects[recipe].username}</h6>
+    // </section>
+    //   `);
+
+    var title = recipeIDArray.forEach(function (recipe) {
+      return "\n        <h3>\n          ".concat(recipeObjects[recipe].title, "\n        </h3>");
+    });
+    document.querySelector('.card.right').innerHTML = title;
   }
 
   function submitRecipe() {
@@ -182,8 +248,9 @@ __webpack_require__.r(__webpack_exports__);
           var recipeIDArray = Object.keys(recipeObjects); // for (const recipe of recipeIDArray) {
           //   console.table(recipeObjects[recipe].author);
           // }
-          // recipeIDArray.forEach(recipe => console.table(recipeObjects[recipe].title));
-          // renderItems(items);
+          // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));  
+
+          showRecipeLibrary(recipeObjects, recipeIDArray); // renderItems(items);
           // updateStatus('Incremented Quantity by 1!', "success");
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
@@ -206,23 +273,6 @@ __webpack_require__.r(__webpack_exports__);
     createRecipeEl.hidden = true;
     loginPageEl.hidden = false;
     recipeListEl.hidden = true;
-  }
-
-  function renderItems(userName) {
-    // const html =  Object.values(username).map(
-    //   (username) => `
-    //       <li>
-    //         ${username}
-    //       </li>`
-    // ).join('');
-    // listEl.innerHTML = html;
-    console.log("Global Logged In Variable: ".concat(loggedIn));
-
-    if (loggedIn) {
-      console.log("I antered the right if");
-      loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
-      showContent();
-    }
   }
 
   function populateItems() {
@@ -254,7 +304,6 @@ __webpack_require__.r(__webpack_exports__);
   function performLogin() {
     loginAreaEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('login-btn')) {
-        console.log('login button clicked!');
         var enteredUsername = usernameBox.value;
 
         if (enteredUsername) {
@@ -287,7 +336,6 @@ __webpack_require__.r(__webpack_exports__);
   function performLogout() {
     logoutAreaEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('fa-sign-out-alt')) {
-        console.log('logout button clicked');
         fetch("/logout", {
           method: 'POST',
           headers: {
