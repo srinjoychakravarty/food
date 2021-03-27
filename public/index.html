@@ -30,33 +30,22 @@
 					<div class="form-group">
 						<p>Title<span>*</span></p>
 						<i class="fas fa-heading"></i>
-						<input type="text" name="nom" id="nom" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Nom' doit être renseigné."/>
-						<div class="validation"></div>
+						<input type="text" name="title" placeholder="Farro Chicken Salad"/>
 					</div> 
 					<div class="form-group">
 						<p>Author <span>*</span></p>
-						
 						<i class="fa fa-user"></i>
-						<input type="text" name="prenom" id="prenom" data-rule="required" data-msg="Vérifiez votre saisie sur les champs : Le champ 'Prénom' doit être renseigné."/>
-						<div class="validation"></div>
+						<input type="text" name="author" placeholder="Jamie Oliver"/>
 					</div>
 					<div class="form-group">
 						<p>Ingredients <span>*</span></p>
-						
-						<textarea name="message" rows="8" placeholder="• 12 oz chicken    • 12 cups arugula 
-						1⁄4 cup cranberries
-						1 peeled avocado
-						1⁄4 cup crumbled goat cheese
-						1⁄4 cup walnuts, roughly chopped
-						1⁄4 cup honey mustard vinaigrette
-						Salt and black pepper to taste"></textarea>
-						<div class="validation"></div>
-						<div class="ingredient-tip">Please put 1 ingredient per line</div>
+						<textarea name="ingredients" rows="4" placeholder="* 12 oz chicken&#10;* 12 cups arugula&#10;* 1⁄4 cup cranberries&#10;* 1/2 avocado sliced&#10;* 1/4 cup walnuts or pecans"></textarea>
+						<div class="ingredient-tip">Put an asterix (*) before each ingredient</div>
 					</div>
 					<div class="form-group">
 						<p>Instructions <span>*</span></p>
-						<textarea name="message" rows="8" placeholder="• 1 cup rice         • 2 cups water"></textarea>
-						<div class="validation"></div>
+						<textarea name="instructions" rows="5" placeholder="* Put salad ingredients in bowl.&#10;* Drizzle dressing & toss light.&#10;* Sit in the shade and enjoy!&#10;* Don’t heat up the kitchen&#10;* Add a protein of your choice" ></textarea>
+						<div class="ingredient-tip">Put an asterix (*) before each instruction</div>
 					</div>  
 				<button class="form-btn" disabled type="button">Create Recipe</button>
 		  	</form> 

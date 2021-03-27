@@ -109,17 +109,17 @@
   }
   
   textarea {
-    width: 230px;
+    width: 260px;
   }
 
   input {
-    width: 210px;
+    width: 145px;
   }
 
   .ingredient-tip {
     color: rgb(209, 127, 127);
     font-family: Courier;
-    font-size: 12px;
+    font-size: 10px;
     font-style: italic;
     margin-bottom: 10px;
   }
