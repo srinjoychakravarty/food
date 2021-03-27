@@ -10,20 +10,25 @@ import { errMsgs, getHome, convertError, } from './services';
     const outputEl = document.querySelector('.output');
     const loggedInUserEl = document.querySelector('.logged-in-user');
     const logoutAreaEl = document.querySelector('.logout-area');
+    const loginPageEl = document.querySelector('.login-page');
+    const createRecipeEl = document.querySelector('.create-recipe');
+    const recipeListEl = document.querySelector('.recipe-list');
 
     let loggedIn;
     let userName;
 
     function showContent() {
-      document.querySelector('.login-page').hidden = true;
-      document.querySelector('.item-list').hidden = false;
+      logoutAreaEl.hidden = false;
+      createRecipeEl.hidden = false;
+      loginPageEl.hidden = true;
+      recipeListEl.hidden = false;
     }
 
     function showLogin() {
-      // document.querySelector('.login-page').classList.remove('hidden');
-      // document.querySelector('.item-list').classList.add('hidden');
-      document.querySelector('.login-page').hidden = false;
-      document.querySelector('.item-list').hidden = true;
+      logoutAreaEl.hidden = true;
+      createRecipeEl.hidden = true;
+      loginPageEl.hidden = false;
+      recipeListEl.hidden = true;
     }
 
     function renderItems( userName ) {    

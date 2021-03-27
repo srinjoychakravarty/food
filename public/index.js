@@ -136,19 +136,24 @@ __webpack_require__.r(__webpack_exports__);
   var outputEl = document.querySelector('.output');
   var loggedInUserEl = document.querySelector('.logged-in-user');
   var logoutAreaEl = document.querySelector('.logout-area');
+  var loginPageEl = document.querySelector('.login-page');
+  var createRecipeEl = document.querySelector('.create-recipe');
+  var recipeListEl = document.querySelector('.recipe-list');
   var loggedIn;
   var userName;
 
   function showContent() {
-    document.querySelector('.login-page').hidden = true;
-    document.querySelector('.item-list').hidden = false;
+    logoutAreaEl.hidden = false;
+    createRecipeEl.hidden = false;
+    loginPageEl.hidden = true;
+    recipeListEl.hidden = false;
   }
 
   function showLogin() {
-    // document.querySelector('.login-page').classList.remove('hidden');
-    // document.querySelector('.item-list').classList.add('hidden');
-    document.querySelector('.login-page').hidden = false;
-    document.querySelector('.item-list').hidden = true;
+    logoutAreaEl.hidden = true;
+    createRecipeEl.hidden = true;
+    loginPageEl.hidden = false;
+    recipeListEl.hidden = true;
   }
 
   function renderItems(userName) {
