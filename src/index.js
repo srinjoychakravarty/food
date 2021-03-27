@@ -54,9 +54,11 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
   
 
     function showRecipeLibrary(recipeObjects, recipeIDArray) {
+      let cardLeft = "card left";
+      let cardRight = "card right";
       
       const testHTML = recipeIDArray.map(
-        (recipeID) => `<section class="card right">
+        (recipeID, index) => `<section class="${index % 2 === 0 ? cardLeft : cardRight}">
                           <section class="container">
                             <h3>${recipeObjects[recipeID].title}</h3>
                             <h4>by ${recipeObjects[recipeID].author}</h4>
@@ -76,18 +78,16 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                           </section>
                       </section>`).join('');                    
 
-      document.querySelector('.bobo').innerHTML = testHTML;
+      document.querySelector('.recipe-list').innerHTML = testHTML;
     }
 
     function submitRecipe() {
       createRecipeEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('form-btn') ) { 
-
           const rawtitle = titleBox.value;
           const rawAuthor = authorBox.value;
           const rawIngredients = ingredientsBox.value;
           const rawInstructions = instructionsBox.value;
-          
           fetch(`/recipe`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -97,17 +97,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .then( convertError)
           .then( recipeObjects => {
             let recipeIDArray = Object.keys(recipeObjects);
-
-            // for (const recipe of recipeIDArray) {
-            //   console.table(recipeObjects[recipe].author);
-            // }
-
-            // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));  
-
             showRecipeLibrary(recipeObjects, recipeIDArray);
-
-            // renderItems(items);
-            // updateStatus('Incremented Quantity by 1!', "success");
           })
           .catch( err => {
             updateStatus(errMsgs[err.error] || err.error, "failure");

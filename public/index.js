@@ -173,14 +173,16 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function showRecipeLibrary(recipeObjects, recipeIDArray) {
-    var testHTML = recipeIDArray.map(function (recipeID) {
-      return "<section class=\"card right\">\n                          <section class=\"container\">\n                            <h3>".concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(recipeObjects[recipeID].ingredients.map(function (ingredient) {
+    var cardLeft = "card left";
+    var cardRight = "card right";
+    var testHTML = recipeIDArray.map(function (recipeID, index) {
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(recipeObjects[recipeID].ingredients.map(function (ingredient) {
         return "<li> \n                                                  ".concat(ingredient, " \n                                                </li>");
       }).join(''), "\n                            </ul>\n                            <h5>Instructions</h5>\n                            <ol>").concat(recipeObjects[recipeID].instructions.map(function (instruction) {
         return "<li> \n                                                  ".concat(instruction, " \n                                                </li>");
       }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
     }).join('');
-    document.querySelector('.bobo').innerHTML = testHTML;
+    document.querySelector('.recipe-list').innerHTML = testHTML;
   }
 
   function submitRecipe() {
@@ -206,13 +208,8 @@ __webpack_require__.r(__webpack_exports__);
             error: 'network-error'
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
-          var recipeIDArray = Object.keys(recipeObjects); // for (const recipe of recipeIDArray) {
-          //   console.table(recipeObjects[recipe].author);
-          // }
-          // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));  
-
-          showRecipeLibrary(recipeObjects, recipeIDArray); // renderItems(items);
-          // updateStatus('Incremented Quantity by 1!', "success");
+          var recipeIDArray = Object.keys(recipeObjects);
+          showRecipeLibrary(recipeObjects, recipeIDArray);
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
         });
