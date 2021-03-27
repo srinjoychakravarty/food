@@ -27,7 +27,7 @@ export const errMsgs = {
 
 //new one
 export const getHome = () => {
-    return fetch('/home/', {
+    return fetch('/home', {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
       })
@@ -46,3 +46,5 @@ export const convertError = (response) => {
     .then( err => Promise.reject(err) );
   }
 
+
+ 

@@ -10,30 +10,20 @@ const helper = require('./helper');
 
 app.use(helper.ignoreFavicon);
   
-const sample_item_names = ["Hoodies", "Sweatpants", "Pullovers"];
+const recipeObjects = {};
 const cookieIdentifiers = {};
 
-console.log(sample_item_names);
-
-function isValidUUID(receivedCookie) {
-  const validUUIDv4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  let validityConsensus = validUUIDv4Pattern.test(receivedCookie);
-  console.log(`Validity Consensus: ${validityConsensus}`);
-  return validityConsensus;
-}
-
-app.get('/home/', (req, res) => {
+app.get('/home', (req, res) => {
   const receivedCookie = req.cookies.sessionCookie;
   const username = cookieIdentifiers[receivedCookie];
   console.log(`Username Logged In: ${username}`);
   console.log(`Received Cookie: ${receivedCookie}`);
   if(!receivedCookie) {
     res.status(200).json({'loggedIn': false});
-  } else if (!isValidUUID(receivedCookie) ) {
+  } else if (!helper.isValidUUID(receivedCookie) ) {
     res.status(401).json({ error: 'Unauthorized: Please login to view inventory!' });
   } else {
     console.log('Valid UUID as Session Cookie!');
-    // res.json(inventory["items"]);
     res.status(200).json({'loggedIn': true, 'username': username});
   }
 });
@@ -52,9 +42,9 @@ app.post('/login', express.json(), (req, res) => {
     console.log("Dogs");
     res.status(401).json({error: 'Unauthorized: Dogs cannot maintain inventories!'});
   } else {
-    const session_cookie = uuidv4(); // creates uuid
+    const session_cookie = uuidv4();
     cookieIdentifiers[session_cookie] = username;
-    res.cookie('sessionCookie', session_cookie);  // assigns uuid to cookie      
+    res.cookie('sessionCookie', session_cookie);       
     console.log("Username OK!")
     res.status(200).json({'username': username});
     console.log(cookieIdentifiers);
@@ -69,6 +59,33 @@ app.post('/logout', express.json(), (req, res) => {
   res.json({'message': "Logged out successfuly"});
   console.log(cookieIdentifiers);
 });
+
+app.post('/recipe', express.json(), (req, res) => {
+  const { title, author, ingredients, instructions } = req.body;
+
+  if (title === "") {
+    res.status(411).json({error: 'Length Required: "Title" cannot be empty!'});
+  } else if (author === "" ) {
+    res.status(411).json({error: 'Length Required: "Author" cannot be empty!'});
+  } else if (ingredients === "") {
+    res.status(411).json({error: 'Length Required: "Ingredients" cannot be empty!'});
+  } else if (instructions === "") {
+    res.status(411).json({error: 'Length Required: "Instructions" cannot be empty!'});
+  } else {
+    const escapedTitleString = helper.convertHTML(title);
+    const escapedAuthorString = helper.convertHTML(author);
+    const escapedIngredientsArray = helper.convertHTML(helper.removeLineBreaks(ingredients)).split("*").splice(1);
+    const escapedInstructionsArray = helper.convertHTML(helper.removeLineBreaks(instructions)).split("*").splice(1);
+    const receivedCookie = req.cookies.sessionCookie;
+    const username = cookieIdentifiers[receivedCookie];
+    const item_id = uuidv4();
+    recipeObjects[item_id] = {'uploaded_by': username, 'title': escapedTitleString, 'author': escapedAuthorString, 'ingredients': escapedIngredientsArray, 'instructions': escapedInstructionsArray};
+    res.status(200).json(recipeObjects);
+  }
+  console.log(recipeObjects);
+});
+
+
 
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));

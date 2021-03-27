@@ -1,4 +1,4 @@
-import { errMsgs, getHome, convertError, } from './services';
+import { errMsgs, getHome, convertError, convertHTML } from './services';
 
 (function iife() {
 
@@ -37,10 +37,38 @@ import { errMsgs, getHome, convertError, } from './services';
     function submitRecipe() {
       createRecipeEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('form-btn') ) { 
+
+          const rawtitle = titleBox.value;
+          const rawAuthor = authorBox.value;
+          const rawIngredients = ingredientsBox.value;
+          const rawInstructions = instructionsBox.value;
+          
+          console.log(`Title: ${rawtitle}`);
+          console.log(`Author: ${rawAuthor}`);
+          console.log(`Ingredients: ${rawIngredients}`);
+          console.log(`Instructions: ${rawInstructions}`);
           console.log('create recipe button clicked!');
+
+          fetch(`/recipe`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body : JSON.stringify({title: rawtitle, author: rawAuthor, ingredients: rawIngredients, instructions: rawInstructions}),
+          })
+          .catch( () => Promise.reject( { error: 'network-error' }) )
+          .then( convertError)
+          .then( items => {
+            // renderItems(items);
+            // updateStatus('Incremented Quantity by 1!', "success");
+          })
+          .catch( err => {
+            updateStatus(errMsgs[err.error] || err.error, "failure");
+          });
+
+          
         } 
       });
     }
+
 
     function showContent() {
       loggedInUserEl.hidden = false;
@@ -99,6 +127,8 @@ import { errMsgs, getHome, convertError, } from './services';
         loginButton.disabled = false;
       });
     }
+
+
 
     function performLogin() {
         loginAreaEl.addEventListener('click', (e) => {

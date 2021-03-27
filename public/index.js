@@ -38,7 +38,7 @@ var errMsgs = {
 //new one
 
 var getHome = function getHome() {
-  return fetch('/home/', {
+  return fetch('/home', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -159,7 +159,35 @@ __webpack_require__.r(__webpack_exports__);
   function submitRecipe() {
     createRecipeEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('form-btn')) {
+        var rawtitle = titleBox.value;
+        var rawAuthor = authorBox.value;
+        var rawIngredients = ingredientsBox.value;
+        var rawInstructions = instructionsBox.value;
+        console.log("Title: ".concat(rawtitle));
+        console.log("Author: ".concat(rawAuthor));
+        console.log("Ingredients: ".concat(rawIngredients));
+        console.log("Instructions: ".concat(rawInstructions));
         console.log('create recipe button clicked!');
+        fetch("/recipe", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title: rawtitle,
+            author: rawAuthor,
+            ingredients: rawIngredients,
+            instructions: rawInstructions
+          })
+        })["catch"](function () {
+          return Promise.reject({
+            error: 'network-error'
+          });
+        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {// renderItems(items);
+          // updateStatus('Incremented Quantity by 1!', "success");
+        })["catch"](function (err) {
+          updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+        });
       }
     });
   }
