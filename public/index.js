@@ -182,29 +182,48 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     // recipeIDArray.forEach(recipe => console.log(recipeObjects[recipe]));
     // let recipeTitles = recipeIDArray.forEach(recipe => recipeObjects[recipe]);
     // console.log(recipeTitles);
-    var recipeTitles = [];
+    // let recipeTitles = [];
+    // for (const recipe of recipeIDArray) {
+    //   recipeTitles.push(recipeObjects[recipe].title);
+    // }
+    // console.log(recipeTitles);
+    // const titlesHTML = recipeTitles.map(
+    //   (title) => `<li> 
+    //               ${title} 
+    //             </li>`).join('');
+    //document.querySelector('.bobo').innerHTML = titlesHTML;
+    var recipes = [];
 
     var _iterator = _createForOfIteratorHelper(recipeIDArray),
         _step;
 
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var recipe = _step.value;
-        recipeTitles.push(recipeObjects[recipe].title); // const titlesHTML = `<li>${recipeObjects[recipe].title}</li>`;
-        // document.querySelector('.bobo').innerHTML = titlesHTML;
-        //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeObjects[recipe].title;
-      }
+        var _recipe = _step.value;
+        recipes.push(recipeObjects[_recipe].ingredients);
+      } // console.log(recipes);
+
     } catch (err) {
       _iterator.e(err);
     } finally {
       _iterator.f();
     }
 
-    console.log(recipeTitles);
-    var titlesHTML = recipeTitles.map(function (title) {
-      return "<li> \n                    ".concat(title, " \n                  </li>");
+    var ingredientsListItemsHTML = [];
+
+    for (var _i = 0, _recipes = recipes; _i < _recipes.length; _i++) {
+      var recipe = _recipes[_i];
+      var unorderedListHTML = recipe.map(function (ingredient) {
+        return "<li> \n                        ".concat(ingredient, " \n                      </li>");
+      }).join('');
+      ingredientsListItemsHTML.push(unorderedListHTML);
+    }
+
+    console.log(ingredientsListItemsHTML);
+    var testHTML = recipeIDArray.map(function (recipeID) {
+      return "<section class=\"card right\">\n                          <section class=\"container\">\n                            <h3>".concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(ingredientsListItemsHTML, "</ul>\n                          </section>\n                      </section>");
     }).join('');
-    document.querySelector('.bobo').innerHTML = titlesHTML; //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
+    document.querySelector('.bobo').innerHTML = testHTML; //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
     // document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title')
     // const cardHTML = recipeIDArray.forEach(
     //   recipe => `
@@ -215,11 +234,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     //   <h6>Submitted by: ${recipeObjects[recipe].username}</h6>
     // </section>
     //   `);
-
-    var title = recipeIDArray.forEach(function (recipe) {
-      return "\n        <h3>\n          ".concat(recipeObjects[recipe].title, "\n        </h3>");
-    });
-    document.querySelector('.card.right').innerHTML = title;
+    // const title = recipeIDArray.forEach(
+    //   recipe => `
+    //   <h3>
+    //     ${recipeObjects[recipe].title}
+    //   </h3>`);
+    // document.querySelector('.card.right').innerHTML = title;
   }
 
   function submitRecipe() {

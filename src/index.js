@@ -59,22 +59,49 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       // let recipeTitles = recipeIDArray.forEach(recipe => recipeObjects[recipe]);
       // console.log(recipeTitles);
 
-      let recipeTitles = [];
+      // let recipeTitles = [];
+      // for (const recipe of recipeIDArray) {
+      //   recipeTitles.push(recipeObjects[recipe].title);
+      // }
+      // console.log(recipeTitles);
+
+      // const titlesHTML = recipeTitles.map(
+      //   (title) => `<li> 
+      //               ${title} 
+      //             </li>`).join('');
+
+      //document.querySelector('.bobo').innerHTML = titlesHTML;
+
+      let recipes = [];
       for (const recipe of recipeIDArray) {
-        recipeTitles.push(recipeObjects[recipe].title);
-        // const titlesHTML = `<li>${recipeObjects[recipe].title}</li>`;
-        // document.querySelector('.bobo').innerHTML = titlesHTML;
-        //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeObjects[recipe].title;
+        recipes.push(recipeObjects[recipe].ingredients);
       }
-      console.log(recipeTitles);
+      // console.log(recipes);
 
-      const titlesHTML = recipeTitles.map(
-        (title) => `<li> 
-                    ${title} 
-                  </li>`).join('');
+      let ingredientsListItemsHTML = [];
 
-      document.querySelector('.bobo').innerHTML = titlesHTML;
+      for (const recipe of recipes) {
+        const unorderedListHTML = recipe.map(
+          (ingredient) => `<li> 
+                        ${ingredient} 
+                      </li>`).join('');
 
+        ingredientsListItemsHTML.push(unorderedListHTML);
+      }
+
+      console.log(ingredientsListItemsHTML);
+      
+      const testHTML = recipeIDArray.map(
+        (recipeID) => `<section class="card right">
+                          <section class="container">
+                            <h3>${recipeObjects[recipeID].title}</h3>
+                            <h4>by ${recipeObjects[recipeID].author}</h4>
+                            <h5>Ingredients</h5>
+                            <ul>${ingredientsListItemsHTML}</ul>
+                          </section>
+                      </section>`).join('');
+      
+      document.querySelector('.bobo').innerHTML = testHTML;
 
       //document.querySelector('.card.right').querySelector('.container').querySelector('.recipe-title').innerHTML = recipeTitles[1].toString();
 
@@ -90,13 +117,13 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       //   `);
 
 
-      const title = recipeIDArray.forEach(
-        recipe => `
-        <h3>
-          ${recipeObjects[recipe].title}
-        </h3>`);
+      // const title = recipeIDArray.forEach(
+      //   recipe => `
+      //   <h3>
+      //     ${recipeObjects[recipe].title}
+      //   </h3>`);
 
-      document.querySelector('.card.right').innerHTML = title;
+      // document.querySelector('.card.right').innerHTML = title;
     }
 
     function submitRecipe() {
