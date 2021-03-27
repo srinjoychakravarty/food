@@ -4,7 +4,14 @@ import { errMsgs, getHome, convertError, } from './services';
 
     const listEl = document.querySelector('.items');
     const usernameBox = document.querySelector('.login-area').querySelector('.uname-input');
+
+    const titleBox = document.querySelector("form[name='new-recipe'] input[name='title']");
+    const authorBox = document.querySelector("form[name='new-recipe'] input[name='author']");
+    const ingredientsBox = document.querySelector("form[name='new-recipe'] textarea[name='ingredients']");
+    const instructionsBox = document.querySelector("form[name='new-recipe'] textarea[name='instructions']");
+    
     const loginButton = document.querySelector('.login-area').querySelector('.login-btn');
+    const recipeButton = document.querySelector('.create-recipe').querySelector('.form-btn');
     const loginAreaEl = document.querySelector('.login-area');
     const errorEl = document.querySelector('.error');
     const outputEl = document.querySelector('.output');
@@ -14,8 +21,26 @@ import { errMsgs, getHome, convertError, } from './services';
     const createRecipeEl = document.querySelector('.create-recipe');
     const recipeListEl = document.querySelector('.recipe-list');
 
+    const bodyEl = document.querySelector('.spa');
+
     let loggedIn;
     let userName;
+
+    function enableRecipeCreation() {
+      bodyEl.addEventListener('click', event => {
+        if (titleBox.value != "" && authorBox.value !== "" && ingredientsBox.value !== "" && instructionsBox.value !== "") {
+          recipeButton.disabled = false;
+        }
+      });
+    }
+
+    function submitRecipe() {
+      createRecipeEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('form-btn') ) { 
+          console.log('create recipe button clicked!');
+        } 
+      });
+    }
 
     function showContent() {
       loggedInUserEl.hidden = false;
@@ -124,7 +149,9 @@ import { errMsgs, getHome, convertError, } from './services';
         }
       });
     }
-  
+    
+    submitRecipe();
+    enableRecipeCreation();
     performLogout();
     performLogin();
     populateItems();

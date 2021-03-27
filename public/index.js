@@ -130,7 +130,12 @@ __webpack_require__.r(__webpack_exports__);
 (function iife() {
   var listEl = document.querySelector('.items');
   var usernameBox = document.querySelector('.login-area').querySelector('.uname-input');
+  var titleBox = document.querySelector("form[name='new-recipe'] input[name='title']");
+  var authorBox = document.querySelector("form[name='new-recipe'] input[name='author']");
+  var ingredientsBox = document.querySelector("form[name='new-recipe'] textarea[name='ingredients']");
+  var instructionsBox = document.querySelector("form[name='new-recipe'] textarea[name='instructions']");
   var loginButton = document.querySelector('.login-area').querySelector('.login-btn');
+  var recipeButton = document.querySelector('.create-recipe').querySelector('.form-btn');
   var loginAreaEl = document.querySelector('.login-area');
   var errorEl = document.querySelector('.error');
   var outputEl = document.querySelector('.output');
@@ -139,8 +144,25 @@ __webpack_require__.r(__webpack_exports__);
   var loginPageEl = document.querySelector('.login-page');
   var createRecipeEl = document.querySelector('.create-recipe');
   var recipeListEl = document.querySelector('.recipe-list');
+  var bodyEl = document.querySelector('.spa');
   var loggedIn;
   var userName;
+
+  function enableRecipeCreation() {
+    bodyEl.addEventListener('click', function (event) {
+      if (titleBox.value != "" && authorBox.value !== "" && ingredientsBox.value !== "" && instructionsBox.value !== "") {
+        recipeButton.disabled = false;
+      }
+    });
+  }
+
+  function submitRecipe() {
+    createRecipeEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('form-btn')) {
+        console.log('create recipe button clicked!');
+      }
+    });
+  }
 
   function showContent() {
     loggedInUserEl.hidden = false;
@@ -258,6 +280,8 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  submitRecipe();
+  enableRecipeCreation();
   performLogout();
   performLogin();
   populateItems();
