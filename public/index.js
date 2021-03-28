@@ -146,6 +146,7 @@ __webpack_require__.r(__webpack_exports__);
   var goHomeEl = document.querySelector('.go-home');
   var storedRecipesEl = document.querySelector('.recipe-cards');
   var recipeSummariesEl = document.querySelector('.recipe-summaries');
+  var containerEl = document.querySelector('.container');
   var bodyEl = document.querySelector('.spa');
   var loggedIn;
   var userName;
@@ -175,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
-      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                            <button class=\"form-btn\" type=\"button\">Explore Recipe</button>\n                          </section>\n                      </section>");
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                            <button class=\"form-btn\" id=\"").concat(recipeID, "\" type=\"button\">Explore Recipe</button>\n                          </section>\n                      </section>");
     }).join('');
     recipeSummariesEl.innerHTML = testHTML;
   }
@@ -353,6 +354,13 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function exploreRecipe() {
+    recipeSummariesEl.addEventListener('click', function (e) {
+      console.log(e.target.id);
+    });
+  }
+
+  exploreRecipe();
   returnHome();
   writeRecipe();
   submitRecipe();

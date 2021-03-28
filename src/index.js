@@ -24,7 +24,9 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     const storedRecipesEl = document.querySelector('.recipe-cards');
     const recipeSummariesEl = document.querySelector('.recipe-summaries');
 
+    const containerEl = document.querySelector('.container');
     const bodyEl = document.querySelector('.spa');
+
 
     let loggedIn;
     let userName;
@@ -75,7 +77,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                             <h3>${recipeObjects[recipeID].title}</h3>
                             <h4>by ${recipeObjects[recipeID].author}</h4>
                             <h6>Submitted by: ${recipeObjects[recipeID].uploaded_by}</h6>
-                            <button class="form-btn" type="button">Explore Recipe</button>
+                            <button class="form-btn" id="${recipeID}" type="button">Explore Recipe</button>
                           </section>
                       </section>`).join('');                    
                       recipeSummariesEl.innerHTML = testHTML;
@@ -241,6 +243,13 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
+    function exploreRecipe() {
+      recipeSummariesEl.addEventListener('click', (e) => {
+        console.log(e.target.id);
+      });
+    }
+
+    exploreRecipe();
     returnHome();
     writeRecipe();
     submitRecipe();
