@@ -10,7 +10,7 @@ const helper = require('./helper');
 
 app.use(helper.ignoreFavicon);
 
-let itemIDs = [uuidv4(), uuidv4()];
+let recipeIDs = [uuidv4(), uuidv4()];
 
 let usernames = ["jamie_oliver", "gordon_ramsey"];
 
@@ -44,8 +44,8 @@ let instructions = [["Place chicken and 1/4 cup Lemon.",
 const recipeObjects = {};
 const cookieIdentifiers = {};
 
-recipeObjects[itemIDs[0]] = {'uploaded_by': usernames[0], 'title': titles[0], 'author': authors[0], 'ingredients': ingredients[0], 'instructions': instructions[0]};
-recipeObjects[itemIDs[1]] = {'uploaded_by': usernames[1], 'title': titles[1], 'author': authors[1], 'ingredients': ingredients[1], 'instructions': instructions[1]};
+recipeObjects[recipeIDs[0]] = {'uploaded_by': usernames[0], 'title': titles[0], 'author': authors[0], 'ingredients': ingredients[0], 'instructions': instructions[0]};
+recipeObjects[recipeIDs[1]] = {'uploaded_by': usernames[1], 'title': titles[1], 'author': authors[1], 'ingredients': ingredients[1], 'instructions': instructions[1]};
 
 
 recipeSummaryArray = [];
@@ -55,6 +55,16 @@ for (const [key, value] of Object.entries(recipeObjects)) {
   recipeSummaryObject['author'] = value.author;
   recipeSummaryArray.push(recipeSummaryObject);
 }
+
+app.get('/recipe/:recipeID', (req, res) => {
+  const recipe_id = req.params.recipeID;
+  console.log(`Request for Recipe ID: ${recipe_id}`);
+  if(recipeObjects[recipe_id]) {
+    res.status(200).json(recipeObjects[recipe_id]);
+  } else {
+    res.status(404).json({ error: `Unknown recipe id: ${recipe_id}!`});
+  }
+});
 
 app.get('/home', (req, res) => {
   console.log('get request hit /home');
@@ -99,8 +109,6 @@ app.post('/login', express.json(), (req, res) => {
     recipeSummaryArray.push(recipeSummaryObject);
   }
 
-
-
   if (userName != unsanitizedUsernameInput || userName !== alphanumericUsername || userName !== username) {
     res.status(400).json({error: 'Bad Request: Only enter valid alphanumeric syntax as username!'});
   } else if (helper.dummyValidation(username) === 'DOG') {
@@ -144,8 +152,8 @@ app.post('/recipe', express.json(), (req, res) => {
     const escapedInstructionsArray = helper.convertHTML(helper.removeLineBreaks(instructions)).split("*").splice(1);
     const receivedCookie = req.cookies.sessionCookie;
     const username = cookieIdentifiers[receivedCookie];
-    const item_id = uuidv4();
-    recipeObjects[item_id] = {'uploaded_by': username, 'title': escapedTitleString, 'author': escapedAuthorString, 'ingredients': escapedIngredientsArray, 'instructions': escapedInstructionsArray};
+    const recipe_id = uuidv4();
+    recipeObjects[recipe_id] = {'uploaded_by': username, 'title': escapedTitleString, 'author': escapedAuthorString, 'ingredients': escapedIngredientsArray, 'instructions': escapedInstructionsArray};
     res.status(200).json(recipeObjects);
   }
   console.log(recipeObjects);

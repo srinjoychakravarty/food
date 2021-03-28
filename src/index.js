@@ -39,32 +39,33 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
-    function showRecipeLibrary(recipeObjects, recipeIDArray) {
+    function showRecipeDetails(recipeObjects, recipeIDArray) {
+      console.log(recipeObjects);
+      console.log(recipeIDArray);
       let cardLeft = "card left";
       let cardRight = "card right";
-      
       const testHTML = recipeIDArray.map(
         (recipeID, index) => `<section class="${index % 2 === 0 ? cardLeft : cardRight}">
                           <section class="container">
-                            <h3>${recipeObjects[recipeID].title}</h3>
-                            <h4>by ${recipeObjects[recipeID].author}</h4>
+                            <h3>${recipeObjects.title}</h3>
+                            <h4>by ${recipeObjects.author}</h4>
                             <h5>Ingredients</h5>
-                            <ul>${recipeObjects[recipeID].ingredients.map(
+                            <ul>${recipeObjects.ingredients.map(
                               (ingredient) => `<li> 
                                                   ${ingredient} 
                                                 </li>`).join('')}
                             </ul>
                             <h5>Instructions</h5>
-                            <ol>${recipeObjects[recipeID].instructions.map(
+                            <ol>${recipeObjects.instructions.map(
                               (instruction) => `<li> 
                                                   ${instruction} 
                                                 </li>`).join('')}
                             </ol>
-                            <h6>Submitted by: ${recipeObjects[recipeID].uploaded_by}</h6>
+                            <h6>Submitted by: ${recipeObjects.uploaded_by}</h6>
                           </section>
                       </section>`).join('');                    
-
-                      storedRecipesEl.innerHTML = testHTML;
+            
+      storedRecipesEl.innerHTML = testHTML;
     }
 
     function showRecipeSummaries(recipeObjects, recipeIDArray) {
@@ -98,6 +99,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .catch( () => Promise.reject( { error: 'network-error' }) )
           .then( convertError)
           .then( recipeObjects => {
+            console.log(recipeObjects);
             let recipeIDArray = Object.keys(recipeObjects);
             showRecipeSummaries(recipeObjects, recipeIDArray);
             showRecipesHome();
@@ -139,6 +141,12 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       recipeSummariesEl.hidden = true;
       writeRecipeEl.hidden = true;
       goHomeEl.hidden = false;
+    }
+
+    function expandRecipe() {
+      storedRecipesEl.hidden = false;
+      recipeSummariesEl.hidden = true;
+      createRecipeEl.hidden = true;
     }
 
     function renderItems( userName ) {    
@@ -205,6 +213,23 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
         });
     }
 
+    function writeRecipe() {
+      writeRecipeEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('fa-cheese') ) {
+          writingRecipeInProgress();
+        }
+      });
+    }
+
+    function returnHome() {
+      goHomeEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('fa-home') ) {
+          console.log('home button clicked');
+          populateItems();
+        }
+      });
+    }
+
     function performLogout() {
       logoutAreaEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('fa-sign-out-alt') ) {
@@ -226,26 +251,23 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
-    function writeRecipe() {
-      writeRecipeEl.addEventListener('click', (e) => {
-        if(e.target.classList.contains('fa-cheese') ) {
-          writingRecipeInProgress();
-        }
-      });
-    }
-
-    function returnHome() {
-      goHomeEl.addEventListener('click', (e) => {
-        if(e.target.classList.contains('fa-home') ) {
-          console.log('home button clicked');
-          populateItems();
-        }
-      });
-    }
-
     function exploreRecipe() {
       recipeSummariesEl.addEventListener('click', (e) => {
-        console.log(e.target.id);
+        const recipe_id = e.target.id;
+        fetch(`/recipe/${recipe_id}`, {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json'}
+        })
+        .catch( () => Promise.reject( { error: 'network-error' }) )
+        .then( convertError)
+        .then( recipeObject => {
+          let recipeIDArray = [recipe_id];
+          showRecipeDetails(recipeObject, recipeIDArray);
+          expandRecipe();
+        })
+        .catch( err => {
+          updateStatus(errMsgs[err.error] || err.error, "failure");
+        });
       });
     }
 

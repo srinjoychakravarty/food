@@ -159,15 +159,17 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
-  function showRecipeLibrary(recipeObjects, recipeIDArray) {
+  function showRecipeDetails(recipeObjects, recipeIDArray) {
+    console.log(recipeObjects);
+    console.log(recipeIDArray);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
-      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(recipeObjects[recipeID].ingredients.map(function (ingredient) {
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects.title, "</h3>\n                            <h4>by ").concat(recipeObjects.author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(recipeObjects.ingredients.map(function (ingredient) {
         return "<li> \n                                                  ".concat(ingredient, " \n                                                </li>");
-      }).join(''), "\n                            </ul>\n                            <h5>Instructions</h5>\n                            <ol>").concat(recipeObjects[recipeID].instructions.map(function (instruction) {
+      }).join(''), "\n                            </ul>\n                            <h5>Instructions</h5>\n                            <ol>").concat(recipeObjects.instructions.map(function (instruction) {
         return "<li> \n                                                  ".concat(instruction, " \n                                                </li>");
-      }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
+      }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects.uploaded_by, "</h6>\n                          </section>\n                      </section>");
     }).join('');
     storedRecipesEl.innerHTML = testHTML;
   }
@@ -204,6 +206,7 @@ __webpack_require__.r(__webpack_exports__);
             error: 'network-error'
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
+          console.log(recipeObjects);
           var recipeIDArray = Object.keys(recipeObjects);
           showRecipeSummaries(recipeObjects, recipeIDArray);
           showRecipesHome();
@@ -243,6 +246,12 @@ __webpack_require__.r(__webpack_exports__);
     recipeSummariesEl.hidden = true;
     writeRecipeEl.hidden = true;
     goHomeEl.hidden = false;
+  }
+
+  function expandRecipe() {
+    storedRecipesEl.hidden = false;
+    recipeSummariesEl.hidden = true;
+    createRecipeEl.hidden = true;
   }
 
   function renderItems(userName) {
@@ -314,6 +323,23 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function writeRecipe() {
+    writeRecipeEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-cheese')) {
+        writingRecipeInProgress();
+      }
+    });
+  }
+
+  function returnHome() {
+    goHomeEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-home')) {
+        console.log('home button clicked');
+        populateItems();
+      }
+    });
+  }
+
   function performLogout() {
     logoutAreaEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('fa-sign-out-alt')) {
@@ -337,26 +363,25 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
-  function writeRecipe() {
-    writeRecipeEl.addEventListener('click', function (e) {
-      if (e.target.classList.contains('fa-cheese')) {
-        writingRecipeInProgress();
-      }
-    });
-  }
-
-  function returnHome() {
-    goHomeEl.addEventListener('click', function (e) {
-      if (e.target.classList.contains('fa-home')) {
-        console.log('home button clicked');
-        populateItems();
-      }
-    });
-  }
-
   function exploreRecipe() {
     recipeSummariesEl.addEventListener('click', function (e) {
-      console.log(e.target.id);
+      var recipe_id = e.target.id;
+      fetch("/recipe/".concat(recipe_id), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })["catch"](function () {
+        return Promise.reject({
+          error: 'network-error'
+        });
+      }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObject) {
+        var recipeIDArray = [recipe_id];
+        showRecipeDetails(recipeObject, recipeIDArray);
+        expandRecipe();
+      })["catch"](function (err) {
+        updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+      });
     });
   }
 
