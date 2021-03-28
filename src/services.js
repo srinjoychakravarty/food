@@ -4,32 +4,10 @@ export const errMsgs = {
     'network-error': 'Request Timeout: Server seems to be down!',
 };
 
-// export const triggerLoginService = ( enteredUsername ) => {
-//     return fetch(`/login`, {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body : JSON.stringify({userName: enteredUsername}),
-//     })
-//     .catch( () => Promise.reject( { error: 'network-error' }) )
-//     .then( convertError)
-// };
-
-// export const getLogIn = (chefName) => {
-//     return fetch('/session', {
-//         method: 'POST',
-//         headers: new Headers({'content-type': 'application/json'}),
-//         body: JSON.stringify({ chefName }),
-//     })
-//     .catch( () => { return Promise.reject({code: 'network-error'});})
-//     .then( (convertError)) 
-// };
-
-
-//new one
-export const getHome = () => {
+export const triggerHomeService = () => {
   return fetch('/home', {
     method: 'GET',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'application/json'}
   })
   .catch( () => {
     return Promise.reject({code: 'network-error'});
@@ -37,11 +15,11 @@ export const getHome = () => {
   .then( (convertError));
 };
 
-export const postLogin = (enteredUsername) => {
-  return  fetch(`/login`, {
+export const triggerLoginService = (enteredUsername) => {
+  return fetch(`/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body : JSON.stringify({userName: enteredUsername}),
+    body : JSON.stringify({userName: enteredUsername})
   })
   .catch( () => {
     return Promise.reject({ error: 'network-error' });
@@ -49,6 +27,16 @@ export const postLogin = (enteredUsername) => {
   .then( (convertError));
 };
 
+export const triggerLogoutService = () => {
+  return fetch(`/logout`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'}
+  })
+  .catch( () => {
+    return Promise.reject({ error: 'network-error' });
+  })
+  .then( (convertError));
+}
 
 export const convertError = (response) => {
     if(response.ok) {

@@ -11,34 +11,16 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "errMsgs": () => (/* binding */ errMsgs),
-/* harmony export */   "getHome": () => (/* binding */ getHome),
-/* harmony export */   "postLogin": () => (/* binding */ postLogin),
+/* harmony export */   "triggerHomeService": () => (/* binding */ triggerHomeService),
+/* harmony export */   "triggerLoginService": () => (/* binding */ triggerLoginService),
+/* harmony export */   "triggerLogoutService": () => (/* binding */ triggerLogoutService),
 /* harmony export */   "convertError": () => (/* binding */ convertError)
 /* harmony export */ });
 var errMsgs = {
   'duplicate': 'That name already exists!\nPlease enter a new item... I am confused sir',
   'network-error': 'Request Timeout: Server seems to be down!'
-}; // export const triggerLoginService = ( enteredUsername ) => {
-//     return fetch(`/login`, {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body : JSON.stringify({userName: enteredUsername}),
-//     })
-//     .catch( () => Promise.reject( { error: 'network-error' }) )
-//     .then( convertError)
-// };
-// export const getLogIn = (chefName) => {
-//     return fetch('/session', {
-//         method: 'POST',
-//         headers: new Headers({'content-type': 'application/json'}),
-//         body: JSON.stringify({ chefName }),
-//     })
-//     .catch( () => { return Promise.reject({code: 'network-error'});})
-//     .then( (convertError)) 
-// };
-//new one
-
-var getHome = function getHome() {
+};
+var triggerHomeService = function triggerHomeService() {
   return fetch('/home', {
     method: 'GET',
     headers: {
@@ -50,7 +32,7 @@ var getHome = function getHome() {
     });
   }).then(convertError);
 };
-var postLogin = function postLogin(enteredUsername) {
+var triggerLoginService = function triggerLoginService(enteredUsername) {
   return fetch("/login", {
     method: 'POST',
     headers: {
@@ -59,6 +41,18 @@ var postLogin = function postLogin(enteredUsername) {
     body: JSON.stringify({
       userName: enteredUsername
     })
+  })["catch"](function () {
+    return Promise.reject({
+      error: 'network-error'
+    });
+  }).then(convertError);
+};
+var triggerLogoutService = function triggerLogoutService() {
+  return fetch("/logout", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })["catch"](function () {
     return Promise.reject({
       error: 'network-error'
@@ -162,7 +156,6 @@ __webpack_require__.r(__webpack_exports__);
   var goHomeEl = document.querySelector('.go-home');
   var storedRecipesEl = document.querySelector('.recipe-cards');
   var recipeSummariesEl = document.querySelector('.recipe-summaries');
-  var containerEl = document.querySelector('.container');
   var bodyEl = document.querySelector('.spa');
   var loggedIn;
   var userName;
@@ -179,11 +172,11 @@ __webpack_require__.r(__webpack_exports__);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
-      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects.title, "</h3>\n                            <h4>by ").concat(recipeObjects.author, "</h4>\n                            <h5>Ingredients</h5>\n                            <ul>").concat(recipeObjects.ingredients.map(function (ingredient) {
-        return "<li> \n                                                  ".concat(ingredient, " \n                                                </li>");
-      }).join(''), "\n                            </ul>\n                            <h5>Instructions</h5>\n                            <ol>").concat(recipeObjects.instructions.map(function (instruction) {
-        return "<li> \n                                                  ".concat(instruction, " \n                                                </li>");
-      }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects.uploaded_by, "</h6>\n                          </section>\n                      </section>");
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                        <section class=\"container\">\n                          <h3>").concat(recipeObjects.title, "</h3>\n                          <h4>by ").concat(recipeObjects.author, "</h4>\n                          <h5>Ingredients</h5>\n                          <ul>").concat(recipeObjects.ingredients.map(function (ingredient) {
+        return "<li> \n                                                ".concat(ingredient, " \n                                              </li>");
+      }).join(''), "\n                          </ul>\n                          <h5>Instructions</h5>\n                          <ol>").concat(recipeObjects.instructions.map(function (instruction) {
+        return "<li> \n                                                ".concat(instruction, " \n                                              </li>");
+      }).join(''), "\n                          </ol>\n                          <h6>Submitted by: ").concat(recipeObjects.uploaded_by, "</h6>\n                        </section>\n                    </section>");
     }).join('');
     storedRecipesEl.innerHTML = testHTML;
   }
@@ -192,7 +185,7 @@ __webpack_require__.r(__webpack_exports__);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
-      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                            <button class=\"form-btn\" id=\"").concat(recipeID, "\" type=\"button\">Explore Recipe</button>\n                          </section>\n                      </section>");
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                        <section class=\"container\">\n                          <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                          <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                          <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          <button class=\"form-btn\" id=\"").concat(recipeID, "\" type=\"button\">Explore Recipe</button>\n                        </section>\n                    </section>");
     }).join('');
     recipeSummariesEl.innerHTML = testHTML;
   }
@@ -285,7 +278,7 @@ __webpack_require__.r(__webpack_exports__);
         var enteredUsername = usernameBox.value;
 
         if (enteredUsername) {
-          (0,_services__WEBPACK_IMPORTED_MODULE_0__.postLogin)(enteredUsername).then(function (response) {
+          (0,_services__WEBPACK_IMPORTED_MODULE_0__.triggerLoginService)(enteredUsername).then(function (response) {
             userName = response.username;
             loggedIn = true;
             renderItems(userName);
@@ -299,8 +292,22 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function performLogout() {
+    logoutAreaEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-sign-out-alt')) {
+        (0,_services__WEBPACK_IMPORTED_MODULE_0__.triggerLogoutService)().then(function (response) {
+          showLogin();
+          var logoutMessage = response.message;
+          updateStatus(logoutMessage, "success");
+        })["catch"](function (err) {
+          updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+        });
+      }
+    });
+  }
+
   function populateItems() {
-    (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (response) {
+    (0,_services__WEBPACK_IMPORTED_MODULE_0__.triggerHomeService)().then(function (response) {
       showRecipesHome();
       var recipeObjects = response.recipes;
       var recipeIDArray = Object.keys(recipeObjects);
@@ -341,29 +348,6 @@ __webpack_require__.r(__webpack_exports__);
     goHomeEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('fa-home')) {
         populateItems();
-      }
-    });
-  }
-
-  function performLogout() {
-    logoutAreaEl.addEventListener('click', function (e) {
-      if (e.target.classList.contains('fa-sign-out-alt')) {
-        fetch("/logout", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })["catch"](function () {
-          return Promise.reject({
-            error: 'network-error'
-          });
-        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (response) {
-          showLogin();
-          var logoutMessage = response.message;
-          updateStatus(logoutMessage, "success");
-        })["catch"](function (err) {
-          updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
-        });
       }
     });
   }
