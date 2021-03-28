@@ -117,6 +117,8 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       createRecipeEl.hidden = true;
       recipeSummariesEl.hidden = false;
       outputEl.innerHTML = "";
+      storedRecipesEl.hidden = true;
+      loginPageEl.hidden = false;
     }
 
     function showContent() {
@@ -144,9 +146,12 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     }
 
     function expandRecipe() {
+      writeRecipeEl.hidden = true;
+      goHomeEl.hidden = false;
       storedRecipesEl.hidden = false;
       recipeSummariesEl.hidden = true;
       createRecipeEl.hidden = true;
+      loginPageEl.hidden = true;
     }
 
     function renderItems( userName ) {    

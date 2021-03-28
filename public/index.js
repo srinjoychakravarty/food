@@ -222,6 +222,8 @@ __webpack_require__.r(__webpack_exports__);
     createRecipeEl.hidden = true;
     recipeSummariesEl.hidden = false;
     outputEl.innerHTML = "";
+    storedRecipesEl.hidden = true;
+    loginPageEl.hidden = false;
   }
 
   function showContent() {
@@ -249,9 +251,12 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function expandRecipe() {
+    writeRecipeEl.hidden = true;
+    goHomeEl.hidden = false;
     storedRecipesEl.hidden = false;
     recipeSummariesEl.hidden = true;
     createRecipeEl.hidden = true;
+    loginPageEl.hidden = true;
   }
 
   function renderItems(userName) {
