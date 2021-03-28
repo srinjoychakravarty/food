@@ -327,6 +327,15 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function writeRecipe() {
+    writeRecipeEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-cheese')) {
+        console.log('cheese clicked');
+      }
+    });
+  }
+
+  writeRecipe();
   submitRecipe();
   enableRecipeCreation();
   performLogout();

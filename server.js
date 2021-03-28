@@ -111,7 +111,7 @@ app.post('/login', express.json(), (req, res) => {
     cookieIdentifiers[session_cookie] = username;
     res.cookie('sessionCookie', session_cookie);       
     console.log("Username OK!")
-    res.status(200).json({'username': username, 'message': `${username} logged in successfully`, 'recipes': recipeSummaryArray});
+    res.status(200).json({'username': username, 'message': `${username}, logged in successfully...`, 'recipes': recipeSummaryArray});
     console.log(cookieIdentifiers);
   }
 });
@@ -122,7 +122,7 @@ app.post('/logout', express.json(), (req, res) => {
   delete cookieIdentifiers[sessionCookie];
   res.clearCookie('sessionCookie');
   res.cookie("sessionCookie", {expires: Date.now()});
-  res.json({'message': `${userName} logged out successfully`});
+  res.json({'message': `${userName}, logged out successfully...`});
   console.log(cookieIdentifiers);
 });
 

@@ -108,10 +108,9 @@ i {
 }
 
 .fa-cheese {
-  font-size: 21px;
-  color: rgb(53, 155, 139);
+  font-size: 19px;
+  color: #555555; 
   cursor: pointer;
-
 }
 
 textarea {

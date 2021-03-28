@@ -215,6 +215,15 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
+    function writeRecipe() {
+      writeRecipeEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('fa-cheese') ) {
+          console.log('cheese clicked');
+        }
+      });
+    }
+
+    writeRecipe();
     submitRecipe();
     enableRecipeCreation();
     performLogout();
