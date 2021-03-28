@@ -108,8 +108,14 @@ i {
 }
 
 .fa-cheese {
-  font-size: 19px;
-  color: #555555; 
+  font-size: 18px;
+  color: #757575;
+  cursor: pointer;
+}
+
+.fa-home {
+  font-size: 18px;
+  color: #757575;
   cursor: pointer;
 }
 

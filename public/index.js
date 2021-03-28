@@ -143,6 +143,7 @@ __webpack_require__.r(__webpack_exports__);
   var loginPageEl = document.querySelector('.login-page');
   var createRecipeEl = document.querySelector('.create-recipe');
   var writeRecipeEl = document.querySelector('.write-recipe');
+  var goHomeEl = document.querySelector('.go-home');
   var storedRecipesEl = document.querySelector('.recipe-cards');
   var recipeSummariesEl = document.querySelector('.recipe-summaries');
   var bodyEl = document.querySelector('.spa');
@@ -213,6 +214,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function showRecipesHome() {
+    goHomeEl.hidden = true;
     createRecipeEl.hidden = true;
     recipeSummariesEl.hidden = false;
     outputEl.innerHTML = "";
@@ -238,6 +240,8 @@ __webpack_require__.r(__webpack_exports__);
   function writingRecipeInProgress() {
     createRecipeEl.hidden = false;
     recipeSummariesEl.hidden = true;
+    writeRecipeEl.hidden = true;
+    goHomeEl.hidden = false;
   }
 
   function renderItems(userName) {
@@ -340,6 +344,16 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 
+  function returnHome() {
+    goHomeEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('fa-home')) {
+        console.log('home button clicked');
+        populateItems();
+      }
+    });
+  }
+
+  returnHome();
   writeRecipe();
   submitRecipe();
   enableRecipeCreation();

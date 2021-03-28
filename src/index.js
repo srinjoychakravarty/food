@@ -19,6 +19,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     const loginPageEl = document.querySelector('.login-page');
     const createRecipeEl = document.querySelector('.create-recipe');
     const writeRecipeEl = document.querySelector('.write-recipe');
+    const goHomeEl = document.querySelector('.go-home');
 
     const storedRecipesEl = document.querySelector('.recipe-cards');
     const recipeSummariesEl = document.querySelector('.recipe-summaries');
@@ -108,6 +109,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     }
 
     function showRecipesHome() {
+      goHomeEl.hidden = true;
       createRecipeEl.hidden = true;
       recipeSummariesEl.hidden = false;
       outputEl.innerHTML = "";
@@ -133,6 +135,8 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     function writingRecipeInProgress() {
       createRecipeEl.hidden = false;
       recipeSummariesEl.hidden = true;
+      writeRecipeEl.hidden = true;
+      goHomeEl.hidden = false;
     }
 
     function renderItems( userName ) {    
@@ -228,6 +232,16 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       });
     }
 
+    function returnHome() {
+      goHomeEl.addEventListener('click', (e) => {
+        if(e.target.classList.contains('fa-home') ) {
+          console.log('home button clicked');
+          populateItems();
+        }
+      });
+    }
+
+    returnHome();
     writeRecipe();
     submitRecipe();
     enableRecipeCreation();
