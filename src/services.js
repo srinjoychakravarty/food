@@ -27,14 +27,26 @@ export const errMsgs = {
 
 //new one
 export const getHome = () => {
-    return fetch('/home', {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'},
-      })
-      .catch( () => {
-        return Promise.reject({code: 'network-error'});
-      })
-      .then( (convertError));
+  return fetch('/home', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  })
+  .catch( () => {
+    return Promise.reject({code: 'network-error'});
+  })
+  .then( (convertError));
+};
+
+export const postLogin = (enteredUsername) => {
+  return  fetch(`/login`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body : JSON.stringify({userName: enteredUsername}),
+  })
+  .catch( () => {
+    return Promise.reject({ error: 'network-error' });
+  })
+  .then( (convertError));
 };
 
 

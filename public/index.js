@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "errMsgs": () => (/* binding */ errMsgs),
 /* harmony export */   "getHome": () => (/* binding */ getHome),
+/* harmony export */   "postLogin": () => (/* binding */ postLogin),
 /* harmony export */   "convertError": () => (/* binding */ convertError)
 /* harmony export */ });
 var errMsgs = {
@@ -46,6 +47,21 @@ var getHome = function getHome() {
   })["catch"](function () {
     return Promise.reject({
       code: 'network-error'
+    });
+  }).then(convertError);
+};
+var postLogin = function postLogin(enteredUsername) {
+  return fetch("/login", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userName: enteredUsername
+    })
+  })["catch"](function () {
+    return Promise.reject({
+      error: 'network-error'
     });
   }).then(convertError);
 };
@@ -263,6 +279,26 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 
+  function performLogin() {
+    loginAreaEl.addEventListener('click', function (e) {
+      if (e.target.classList.contains('login-btn')) {
+        var enteredUsername = usernameBox.value;
+
+        if (enteredUsername) {
+          (0,_services__WEBPACK_IMPORTED_MODULE_0__.postLogin)(enteredUsername).then(function (response) {
+            userName = response.username;
+            loggedIn = true;
+            renderItems(userName);
+            var loginMessage = response.message;
+            updateStatus(loginMessage, "success");
+          })["catch"](function (err) {
+            updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+          });
+        }
+      }
+    });
+  }
+
   function populateItems() {
     (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (response) {
       showRecipesHome();
@@ -290,38 +326,6 @@ __webpack_require__.r(__webpack_exports__);
   function disableLoginWhenEmpty() {
     usernameBox.addEventListener('input', function (evt) {
       loginButton.disabled = false;
-    });
-  }
-
-  function performLogin() {
-    loginAreaEl.addEventListener('click', function (e) {
-      if (e.target.classList.contains('login-btn')) {
-        var enteredUsername = usernameBox.value;
-
-        if (enteredUsername) {
-          fetch("/login", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              userName: enteredUsername
-            })
-          })["catch"](function () {
-            return Promise.reject({
-              error: 'network-error'
-            });
-          }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (response) {
-            userName = response.username;
-            loggedIn = true;
-            renderItems(userName);
-            var loginMessage = response.message;
-            updateStatus(loginMessage, "success");
-          })["catch"](function (err) {
-            updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
-          });
-        }
-      }
     });
   }
 

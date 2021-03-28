@@ -1,4 +1,4 @@
-import { errMsgs, getHome, convertError } from './services';
+import { errMsgs, getHome, postLogin, convertError } from './services';
 
 (function iife() {
 
@@ -158,6 +158,27 @@ import { errMsgs, getHome, convertError } from './services';
       }
     }
 
+  function performLogin() {
+    loginAreaEl.addEventListener('click', (e) => {
+      if(e.target.classList.contains('login-btn') ) {
+        const enteredUsername = usernameBox.value;
+        if(enteredUsername) {
+          postLogin(enteredUsername)
+            .then( response => {
+                userName = response.username;
+                loggedIn = true;
+                renderItems(userName);
+                const loginMessage = response.message;
+                updateStatus(loginMessage, "success");
+            })
+            .catch( err => {
+              updateStatus(errMsgs[err.error] || err.error, "failure");
+            });
+        }
+      }
+    });
+}
+
     function populateItems() {
       getHome()
       .then( response => {
@@ -186,33 +207,6 @@ import { errMsgs, getHome, convertError } from './services';
       usernameBox.addEventListener('input', (evt) => {
         loginButton.disabled = false;
       });
-    }
-
-    function performLogin() {
-        loginAreaEl.addEventListener('click', (e) => {
-          if(e.target.classList.contains('login-btn') ) {
-            const enteredUsername = usernameBox.value;
-            if(enteredUsername) {
-                fetch(`/login`, {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                  body : JSON.stringify({userName: enteredUsername}),
-                })
-                .catch( () => Promise.reject( { error: 'network-error' }) )
-                .then( convertError)
-                .then( response => {
-                    userName = response.username;
-                    loggedIn = true;
-                    renderItems(userName);
-                    const loginMessage = response.message;
-                    updateStatus(loginMessage, "success");
-                })
-                .catch( err => {
-                  updateStatus(errMsgs[err.error] || err.error, "failure");
-                });
-            }
-          }
-        });
     }
 
     function writeRecipe() {
