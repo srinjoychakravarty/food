@@ -235,6 +235,11 @@ __webpack_require__.r(__webpack_exports__);
     writeRecipeEl.hidden = true;
   }
 
+  function writingRecipeInProgress() {
+    createRecipeEl.hidden = false;
+    recipeSummariesEl.hidden = true;
+  }
+
   function renderItems(userName) {
     if (loggedIn) {
       loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
@@ -330,7 +335,7 @@ __webpack_require__.r(__webpack_exports__);
   function writeRecipe() {
     writeRecipeEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('fa-cheese')) {
-        console.log('cheese clicked');
+        writingRecipeInProgress();
       }
     });
   }

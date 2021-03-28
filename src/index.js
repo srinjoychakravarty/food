@@ -130,6 +130,11 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       writeRecipeEl.hidden = true;
     }
 
+    function writingRecipeInProgress() {
+      createRecipeEl.hidden = false;
+      recipeSummariesEl.hidden = true;
+    }
+
     function renderItems( userName ) {    
       if (loggedIn) {
         loggedInUserEl.innerHTML = `Welcome, ${userName}`;
@@ -218,7 +223,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     function writeRecipe() {
       writeRecipeEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('fa-cheese') ) {
-          console.log('cheese clicked');
+          writingRecipeInProgress();
         }
       });
     }
