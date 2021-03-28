@@ -160,8 +160,6 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function showRecipeDetails(recipeObjects, recipeIDArray) {
-    console.log(recipeObjects);
-    console.log(recipeIDArray);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
@@ -206,7 +204,6 @@ __webpack_require__.r(__webpack_exports__);
             error: 'network-error'
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
-          console.log(recipeObjects);
           var recipeIDArray = Object.keys(recipeObjects);
           showRecipeSummaries(recipeObjects, recipeIDArray);
           showRecipesHome();
@@ -339,7 +336,6 @@ __webpack_require__.r(__webpack_exports__);
   function returnHome() {
     goHomeEl.addEventListener('click', function (e) {
       if (e.target.classList.contains('fa-home')) {
-        console.log('home button clicked');
         populateItems();
       }
     });

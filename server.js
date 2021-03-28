@@ -47,18 +47,8 @@ const cookieIdentifiers = {};
 recipeObjects[recipeIDs[0]] = {'uploaded_by': usernames[0], 'title': titles[0], 'author': authors[0], 'ingredients': ingredients[0], 'instructions': instructions[0]};
 recipeObjects[recipeIDs[1]] = {'uploaded_by': usernames[1], 'title': titles[1], 'author': authors[1], 'ingredients': ingredients[1], 'instructions': instructions[1]};
 
-
-recipeSummaryArray = [];
-for (const [key, value] of Object.entries(recipeObjects)) {
-  recipeSummaryObject = {};
-  recipeSummaryObject['title'] = value.title;
-  recipeSummaryObject['author'] = value.author;
-  recipeSummaryArray.push(recipeSummaryObject);
-}
-
 app.get('/recipe/:recipeID', (req, res) => {
   const recipe_id = req.params.recipeID;
-  console.log(`Request for Recipe ID: ${recipe_id}`);
   if(recipeObjects[recipe_id]) {
     res.status(200).json(recipeObjects[recipe_id]);
   } else {
@@ -67,27 +57,14 @@ app.get('/recipe/:recipeID', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-  console.log('get request hit /home');
   const receivedCookie = req.cookies.sessionCookie;
   const username = cookieIdentifiers[receivedCookie];
-  recipeSummaryArray = [];
-  for (const [key, value] of Object.entries(recipeObjects)) {
-    recipeSummaryObject = {};
-    recipeSummaryObject['title'] = value.title;
-    recipeSummaryObject['author'] = value.author;
-    recipeSummaryArray.push(recipeSummaryObject);
-  }
-  console.log(recipeSummaryArray);
-
-
   if(!receivedCookie) {
     res.status(200).json({'loggedIn': false, 'recipes': recipeObjects});
   } else if (!helper.isValidUUID(receivedCookie) ) {
     // res.status(401).json({ error: 'Unauthorized: Please login to view inventory!' });
     res.status(200).json({'loggedIn': false, 'recipes': recipeObjects});
   } else {
-    console.log('Valid UUID as Session Cookie!');
-    console.log("ENTERED ELSE and RECIPES BEING DELIVERED")
     res.status(200).json({'loggedIn': true, 'username': username, 'recipes': recipeObjects});
   }
 });
@@ -95,32 +72,17 @@ app.get('/home', (req, res) => {
 app.post('/login', express.json(), (req, res) => {
   const { userName } = req.body;
   const unsanitizedUsernameInput = userName.trim();
-  console.log(unsanitizedUsernameInput);
   const alphanumericUsername = unsanitizedUsernameInput.replace(/[^A-Za-z0-9_]/g, '');
-  console.log(alphanumericUsername);
   const username = helper.sanitizeInput(alphanumericUsername);
-  console.log(`Final Username: ${username}`);
-
-  recipeSummaryArray = [];
-  for (const [key, value] of Object.entries(recipeObjects)) {
-    recipeSummaryObject = {};
-    recipeSummaryObject['title'] = value.title;
-    recipeSummaryObject['author'] = value.author;
-    recipeSummaryArray.push(recipeSummaryObject);
-  }
-
   if (userName != unsanitizedUsernameInput || userName !== alphanumericUsername || userName !== username) {
     res.status(400).json({error: 'Bad Request: Only enter valid alphanumeric syntax as username!'});
   } else if (helper.dummyValidation(username) === 'DOG') {
-    console.log("Dogs");
     res.status(401).json({error: 'Unauthorized: Dogs cannot maintain inventories!'});
   } else {
     const session_cookie = uuidv4();
     cookieIdentifiers[session_cookie] = username;
     res.cookie('sessionCookie', session_cookie);       
-    console.log("Username OK!")
-    res.status(200).json({'username': username, 'message': `${username}, logged in successfully...`, 'recipes': recipeSummaryArray});
-    console.log(cookieIdentifiers);
+    res.status(200).json({'username': username, 'message': `${username}, logged in successfully...`});
   }
 });
 
@@ -131,7 +93,6 @@ app.post('/logout', express.json(), (req, res) => {
   res.clearCookie('sessionCookie');
   res.cookie("sessionCookie", {expires: Date.now()});
   res.json({'message': `${userName}, logged out successfully...`});
-  console.log(cookieIdentifiers);
 });
 
 app.post('/recipe', express.json(), (req, res) => {
@@ -156,7 +117,6 @@ app.post('/recipe', express.json(), (req, res) => {
     recipeObjects[recipe_id] = {'uploaded_by': username, 'title': escapedTitleString, 'author': escapedAuthorString, 'ingredients': escapedIngredientsArray, 'instructions': escapedInstructionsArray};
     res.status(200).json(recipeObjects);
   }
-  console.log(recipeObjects);
 });
 
 

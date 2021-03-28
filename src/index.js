@@ -1,4 +1,4 @@
-import { errMsgs, getHome, convertError, convertHTML } from './services';
+import { errMsgs, getHome, convertError } from './services';
 
 (function iife() {
 
@@ -40,8 +40,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     }
 
     function showRecipeDetails(recipeObjects, recipeIDArray) {
-      console.log(recipeObjects);
-      console.log(recipeIDArray);
       let cardLeft = "card left";
       let cardRight = "card right";
       const testHTML = recipeIDArray.map(
@@ -99,7 +97,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .catch( () => Promise.reject( { error: 'network-error' }) )
           .then( convertError)
           .then( recipeObjects => {
-            console.log(recipeObjects);
             let recipeIDArray = Object.keys(recipeObjects);
             showRecipeSummaries(recipeObjects, recipeIDArray);
             showRecipesHome();
@@ -229,7 +226,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     function returnHome() {
       goHomeEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('fa-home') ) {
-          console.log('home button clicked');
           populateItems();
         }
       });
