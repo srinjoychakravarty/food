@@ -38,6 +38,17 @@ export const triggerLogoutService = () => {
   .then( (convertError));
 }
 
+export const triggerRecipeCallService = (recipe_id) => {
+  return fetch(`/recipe/${recipe_id}`, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+  })
+  .catch( () => {
+    return Promise.reject({ error: 'network-error' });
+  })
+  .then( (convertError));
+}
+
 export const convertError = (response) => {
     if(response.ok) {
       return response.json();
@@ -45,6 +56,3 @@ export const convertError = (response) => {
     return response.json()
     .then( err => Promise.reject(err) );
   }
-
-
- 

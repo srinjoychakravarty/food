@@ -1,4 +1,9 @@
-import { errMsgs, triggerLogoutService, triggerHomeService, triggerLoginService, convertError } from './services';
+import { errMsgs, 
+  triggerRecipeCallService, 
+  triggerLogoutService, 
+  triggerHomeService, 
+  triggerLoginService, 
+  convertError } from './services';
 
 (function iife() {
 
@@ -203,6 +208,21 @@ import { errMsgs, triggerLogoutService, triggerHomeService, triggerLoginService,
     updateStatus(errMsgs[err.error] || err.error);
     });
   };
+
+  function exploreRecipe() {
+    recipeSummariesEl.addEventListener('click', (e) => {
+      const recipe_id = e.target.id;
+      triggerRecipeCallService(recipe_id)
+      .then( recipeObject => {
+        let recipeIDArray = [recipe_id];
+        showRecipeDetails(recipeObject, recipeIDArray);
+        expandRecipe();
+      })
+      .catch( err => {
+        updateStatus(errMsgs[err.error] || err.error, "failure");
+      });
+    });
+  }
   
   function updateStatus( message, status ) {
       if (status == "success") {
@@ -231,26 +251,6 @@ import { errMsgs, triggerLogoutService, triggerHomeService, triggerLoginService,
       if(e.target.classList.contains('fa-home') ) {
         populateItems();
       }
-    });
-  }
-
-  function exploreRecipe() {
-    recipeSummariesEl.addEventListener('click', (e) => {
-      const recipe_id = e.target.id;
-      fetch(`/recipe/${recipe_id}`, {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-      })
-      .catch( () => Promise.reject( { error: 'network-error' }) )
-      .then( convertError)
-      .then( recipeObject => {
-        let recipeIDArray = [recipe_id];
-        showRecipeDetails(recipeObject, recipeIDArray);
-        expandRecipe();
-      })
-      .catch( err => {
-        updateStatus(errMsgs[err.error] || err.error, "failure");
-      });
     });
   }
 

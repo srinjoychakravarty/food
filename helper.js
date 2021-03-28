@@ -62,7 +62,6 @@ const removeLineBreaks = (str) => {
 const isValidUUID = (receivedCookie) => {
     const validUUIDv4Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     let validityConsensus = validUUIDv4Pattern.test(receivedCookie);
-    console.log(`Validity Consensus: ${validityConsensus}`);
     return validityConsensus;
   }
 

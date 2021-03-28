@@ -14,6 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "triggerHomeService": () => (/* binding */ triggerHomeService),
 /* harmony export */   "triggerLoginService": () => (/* binding */ triggerLoginService),
 /* harmony export */   "triggerLogoutService": () => (/* binding */ triggerLogoutService),
+/* harmony export */   "triggerRecipeCallService": () => (/* binding */ triggerRecipeCallService),
 /* harmony export */   "convertError": () => (/* binding */ convertError)
 /* harmony export */ });
 var errMsgs = {
@@ -50,6 +51,18 @@ var triggerLoginService = function triggerLoginService(enteredUsername) {
 var triggerLogoutService = function triggerLogoutService() {
   return fetch("/logout", {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })["catch"](function () {
+    return Promise.reject({
+      error: 'network-error'
+    });
+  }).then(convertError);
+};
+var triggerRecipeCallService = function triggerRecipeCallService(recipe_id) {
+  return fetch("/recipe/".concat(recipe_id), {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     }
@@ -322,6 +335,19 @@ __webpack_require__.r(__webpack_exports__);
 
   ;
 
+  function exploreRecipe() {
+    recipeSummariesEl.addEventListener('click', function (e) {
+      var recipe_id = e.target.id;
+      (0,_services__WEBPACK_IMPORTED_MODULE_0__.triggerRecipeCallService)(recipe_id).then(function (recipeObject) {
+        var recipeIDArray = [recipe_id];
+        showRecipeDetails(recipeObject, recipeIDArray);
+        expandRecipe();
+      })["catch"](function (err) {
+        updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
+      });
+    });
+  }
+
   function updateStatus(message, status) {
     if (status == "success") {
       outputEl.innerText = message;
@@ -349,28 +375,6 @@ __webpack_require__.r(__webpack_exports__);
       if (e.target.classList.contains('fa-home')) {
         populateItems();
       }
-    });
-  }
-
-  function exploreRecipe() {
-    recipeSummariesEl.addEventListener('click', function (e) {
-      var recipe_id = e.target.id;
-      fetch("/recipe/".concat(recipe_id), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })["catch"](function () {
-        return Promise.reject({
-          error: 'network-error'
-        });
-      }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObject) {
-        var recipeIDArray = [recipe_id];
-        showRecipeDetails(recipeObject, recipeIDArray);
-        expandRecipe();
-      })["catch"](function (err) {
-        updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
-      });
     });
   }
 
