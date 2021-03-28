@@ -128,7 +128,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (function iife() {
-  var listEl = document.querySelector('.items');
   var usernameBox = document.querySelector('.login-area').querySelector('.uname-input');
   var titleBox = document.querySelector("form[name='new-recipe'] input[name='title']");
   var authorBox = document.querySelector("form[name='new-recipe'] input[name='author']");
@@ -144,9 +143,8 @@ __webpack_require__.r(__webpack_exports__);
   var loginPageEl = document.querySelector('.login-page');
   var createRecipeEl = document.querySelector('.create-recipe');
   var storedRecipesEl = document.querySelector('.recipe-cards');
+  var recipeSummariesEl = document.querySelector('.recipe-summaries');
   var bodyEl = document.querySelector('.spa');
-  var cardRight = document.querySelector('.card.right');
-  var cardLeft = document.querySelector('.card.left');
   var loggedIn;
   var userName;
 
@@ -156,13 +154,6 @@ __webpack_require__.r(__webpack_exports__);
         recipeButton.disabled = false;
       }
     });
-  }
-
-  function renderItems(userName) {
-    if (loggedIn) {
-      loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
-      showContent();
-    }
   }
 
   function showRecipeLibrary(recipeObjects, recipeIDArray) {
@@ -176,6 +167,15 @@ __webpack_require__.r(__webpack_exports__);
       }).join(''), "\n                            </ol>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
     }).join('');
     storedRecipesEl.innerHTML = testHTML;
+  }
+
+  function showRecipeSummaries(recipeObjects, recipeIDArray) {
+    var cardLeft = "card left";
+    var cardRight = "card right";
+    var testHTML = recipeIDArray.map(function (recipeID, index) {
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
+    }).join('');
+    recipeSummariesEl.innerHTML = testHTML;
   }
 
   function submitRecipe() {
@@ -202,8 +202,8 @@ __webpack_require__.r(__webpack_exports__);
           });
         }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (recipeObjects) {
           var recipeIDArray = Object.keys(recipeObjects);
+          showRecipeSummaries(recipeObjects, recipeIDArray);
           showRecipesHome();
-          showRecipeLibrary(recipeObjects, recipeIDArray);
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
         });
@@ -212,15 +212,15 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function showRecipesHome() {
-    outputEl.innerHTML = "";
     createRecipeEl.hidden = true;
-    storedRecipesEl.hidden = false;
+    recipeSummariesEl.hidden = false;
+    outputEl.innerHTML = "";
   }
 
   function showContent() {
     loggedInUserEl.hidden = false;
     logoutAreaEl.hidden = false;
-    createRecipeEl.hidden = false;
+    createRecipeEl.hidden = true;
     loginPageEl.hidden = true;
   }
 
@@ -232,10 +232,21 @@ __webpack_require__.r(__webpack_exports__);
     storedRecipesEl.hidden = true;
   }
 
+  function renderItems(userName) {
+    if (loggedIn) {
+      loggedInUserEl.innerHTML = "Welcome, ".concat(userName);
+      showContent();
+    }
+  }
+
   function populateItems() {
-    (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (items) {
-      loggedIn = items.loggedIn;
-      userName = items.username;
+    (0,_services__WEBPACK_IMPORTED_MODULE_0__.getHome)().then(function (response) {
+      showRecipesHome();
+      var recipeObjects = response.recipes;
+      var recipeIDArray = Object.keys(recipeObjects);
+      showRecipeSummaries(recipeObjects, recipeIDArray);
+      loggedIn = response.loggedIn;
+      userName = response.username;
       renderItems(userName);
     })["catch"](function (err) {
       updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error);
@@ -276,12 +287,11 @@ __webpack_require__.r(__webpack_exports__);
             return Promise.reject({
               error: 'network-error'
             });
-          }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
-            showContent();
-            userName = items.username;
+          }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (response) {
+            userName = response.username;
             loggedIn = true;
             renderItems(userName);
-            var loginMessage = items.message;
+            var loginMessage = response.message;
             updateStatus(loginMessage, "success");
           })["catch"](function (err) {
             updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");
@@ -303,9 +313,9 @@ __webpack_require__.r(__webpack_exports__);
           return Promise.reject({
             error: 'network-error'
           });
-        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (items) {
+        }).then(_services__WEBPACK_IMPORTED_MODULE_0__.convertError).then(function (response) {
           showLogin();
-          var logoutMessage = items.message;
+          var logoutMessage = response.message;
           updateStatus(logoutMessage, "success");
         })["catch"](function (err) {
           updateStatus(_services__WEBPACK_IMPORTED_MODULE_0__.errMsgs[err.error] || err.error, "failure");

@@ -12,8 +12,10 @@
 }
   
 .output {
-  padding-top: 12px;
+  padding-top: 9px;
   color: rgb(53, 155, 139);
+  font-size: 11px;
+  font: 'Calibri';
 }
 
 .login-btn {
@@ -95,13 +97,14 @@ i {
 }
 
 .contentform {
-  padding: 15px 15px;
+  padding: 10px 10px;
 }
 
 .fa-sign-out-alt {
+  font-size: 13px;
   color: #757575;
-  padding-left: 201px;
   cursor: pointer;
+  margin-bottom: 18px;
 }
 
 textarea {
@@ -134,7 +137,7 @@ p {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: 5px; /* 5px rounded corners */
-  width: 40%;
+  width: 310px;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -153,8 +156,7 @@ img {
 }
 
 .card.right{
-
-  float: right;
+  margin-left: 400px;
 }
 
 .card.left{
@@ -167,4 +169,11 @@ h4 {
 
 h6 { 
   font-style: italic; 
+}
+
+.logged-in-user {
+  font-style: italic; 
+  font-size: 13px;
+  color: rgb(209, 127, 127);
+  font: 'Calibri';
 }

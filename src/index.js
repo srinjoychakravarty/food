@@ -2,7 +2,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
 
 (function iife() {
 
-    const listEl = document.querySelector('.items');
     const usernameBox = document.querySelector('.login-area').querySelector('.uname-input');
 
     const titleBox = document.querySelector("form[name='new-recipe'] input[name='title']");
@@ -19,12 +18,11 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     const logoutAreaEl = document.querySelector('.logout-area');
     const loginPageEl = document.querySelector('.login-page');
     const createRecipeEl = document.querySelector('.create-recipe');
+
     const storedRecipesEl = document.querySelector('.recipe-cards');
+    const recipeSummariesEl = document.querySelector('.recipe-summaries');
 
     const bodyEl = document.querySelector('.spa');
-
-    const cardRight = document.querySelector('.card.right');
-    const cardLeft = document.querySelector('.card.left');
 
     let loggedIn;
     let userName;
@@ -35,13 +33,6 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           recipeButton.disabled = false;
         }
       });
-    }
-
-    function renderItems( userName ) {    
-      if (loggedIn) {
-        loggedInUserEl.innerHTML = `Welcome, ${userName}`;
-        showContent();
-      }
     }
 
     function showRecipeLibrary(recipeObjects, recipeIDArray) {
@@ -72,6 +63,21 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                       storedRecipesEl.innerHTML = testHTML;
     }
 
+    function showRecipeSummaries(recipeObjects, recipeIDArray) {
+      let cardLeft = "card left";
+      let cardRight = "card right";
+      
+      const testHTML = recipeIDArray.map(
+        (recipeID, index) => `<section class="${index % 2 === 0 ? cardLeft : cardRight}">
+                          <section class="container">
+                            <h3>${recipeObjects[recipeID].title}</h3>
+                            <h4>by ${recipeObjects[recipeID].author}</h4>
+                            <h6>Submitted by: ${recipeObjects[recipeID].uploaded_by}</h6>
+                          </section>
+                      </section>`).join('');                    
+                      recipeSummariesEl.innerHTML = testHTML;
+      }
+
     function submitRecipe() {
       createRecipeEl.addEventListener('click', (e) => {
         if(e.target.classList.contains('form-btn') ) { 
@@ -88,8 +94,8 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           .then( convertError)
           .then( recipeObjects => {
             let recipeIDArray = Object.keys(recipeObjects);
+            showRecipeSummaries(recipeObjects, recipeIDArray);
             showRecipesHome();
-            showRecipeLibrary(recipeObjects, recipeIDArray);
           })
           .catch( err => {
             updateStatus(errMsgs[err.error] || err.error, "failure");
@@ -100,15 +106,15 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     }
 
     function showRecipesHome() {
-      outputEl.innerHTML = "";
       createRecipeEl.hidden = true;
-      storedRecipesEl.hidden = false;
+      recipeSummariesEl.hidden = false;
+      outputEl.innerHTML = "";
     }
 
     function showContent() {
       loggedInUserEl.hidden = false;
       logoutAreaEl.hidden = false;
-      createRecipeEl.hidden = false;
+      createRecipeEl.hidden = true;
       loginPageEl.hidden = true;
     }
 
@@ -120,11 +126,22 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       storedRecipesEl.hidden = true;
     }
 
+    function renderItems( userName ) {    
+      if (loggedIn) {
+        loggedInUserEl.innerHTML = `Welcome, ${userName}`;
+        showContent();
+      }
+    }
+
     function populateItems() {
       getHome()
-      .then( items => {
-          loggedIn = items.loggedIn;
-          userName = items.username;
+      .then( response => {
+          showRecipesHome();
+          let recipeObjects = response.recipes;
+          let recipeIDArray = Object.keys(recipeObjects);
+          showRecipeSummaries(recipeObjects, recipeIDArray);
+          loggedIn = response.loggedIn;
+          userName = response.username;
           renderItems(userName);
       })
       .catch( err => {
@@ -158,12 +175,11 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                 })
                 .catch( () => Promise.reject( { error: 'network-error' }) )
                 .then( convertError)
-                .then( items => {
-                    showContent();
-                    userName = items.username;
+                .then( response => {
+                    userName = response.username;
                     loggedIn = true;
                     renderItems(userName);
-                    const loginMessage = items.message;
+                    const loginMessage = response.message;
                     updateStatus(loginMessage, "success");
                 })
                 .catch( err => {
@@ -183,9 +199,9 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
           })
           .catch( () => Promise.reject( { error: 'network-error' }) )
           .then( convertError)
-          .then( items => {
+          .then( response => {
             showLogin();
-            const logoutMessage = items.message;
+            const logoutMessage = response.message;
             updateStatus(logoutMessage, "success");
           })
           .catch( err => {
