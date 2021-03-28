@@ -1,31 +1,130 @@
-# Exam 2 Questions
+# Exam 2
 
-* Answers should be roughly 2-5 sentences, and in your own words.  
-* Some questions ask for a code sample - keep them short and to the point.
-* Be sure to be clear - be careful not to use vague pronouns like "it" if I can't be completely sure what "it" is.
-* I cannot assume knowledge you don't demonstrate, so be clear and explicit.
+* start from the up-to-date main branch (`git checkout main; git pull origin main`)
+* Create a feature branch named 'exam2' (`git checkout -b exam2`)
+* modify the `questions.md` file to have the answers required
+* Add any files necessary to create the application below
+* add, commit, and push the branch to github
+* Create a PR to merge to main
+* Be sure to include the reviewer(s)
+* Due by 11:59pm (PT) Sun Mar 28
 
-## Q1: The first rule I've given about REST services is that the URL should represent a resource.  What does that mean?  Give an example where a url DOES not represent a resource, then describe how to modify it so that it does.
+## Goal and Requirements
 
-## Q2: If the service returns the username as a plain text string (not JSON), what is wrong with the below and what would fix it? (Assume the service works without error)
-```
-  const username = fetch('/username');
-  console.log(`user is named ${username}`);
-```  
+* Did you remember the above requirement about `questions.md`?
 
-## Q3: What does it mean to "store your state in the DOM"?  Why shouldn't you do this?
+You will create a recipe storage and search website, along with the services necessary to support it.
 
-## Q4: Explain the differences between a multiple-page-web application and single-page-web application.  Be sure to fully demonstrate your understanding.
+The application will be a single-page application. (which means only one page load!)  
 
-## Q5: What is Progressive Enhancement?  What is the difference in an SPA that uses Progressive Enhancement compared to an SPA that doesn't use Progressive Enhancement?
+I will be able to install, build, and run your application with `npm install`, `npm start`
+* You will have to create the necessary `scripts` section in `package.json` to make `npm start` work!
+* Hint: It is good to test that this works!
+* Hint: You can clone your repo from github to another directory and test your build there
 
-## Q6: Explain how a REST service is or is not similar to a dynamic asset.
+From the main screen when a user loads the application:
+* There is an option to login, but they are not required to login to view
+* They can see a list of all recipe titles and their authors
+* They can click a recipe title to see the recipe (author, title, ingredients, and instructions)
+  * Do NOT use the recipe title as an identifier for the record, store an id with each recipe
+    * Recipe titles can be repeated - you might have multiple recipes for butterbeer, for example
+    * The id can be whatever value you want, so long as it is unique for each recipe
+* Logged in users can add a new recipe (title, ingredients, and instructions)
+    * This should represent a reasonable way to enter and display a recipe
+    * Hint: `<textarea>` is better for long blocks of text than `<input>`
+    * Hint: The server must enforce that they are logged in when they try to add recipes
+* When not on the main page, they can click something to return to the main page
+  * This refers to the view displayed, this is all one "page", technically
 
-## Q7: Give an example of a piece of information you should not store in a cookie, and why you should not store it that way.
+* All services will be RESTful
+* All services will return JSON data, not HTML
+  * Returning no data in the body is fine if the status code conveys enough information for that request/response
+* All services must accept data as query params, in the path of the url, or as JSON data in the body
+* You must use 'express', 'cookie-parser', and 'uuid' node modules
+* You must use 'webpack' and 'babel-loader' (along with the various modules they require) to bundle the front end javascript
+* Your front end JS must be at least two files in src/, and should show proper separation of concerns
 
-## Q8: Explain why it is useful to separate a function that fetches data from what you do with that data
+### Home 
+* Displays a list of all stored recipes
+* Offers the option to login or logout
+  * this CAN be present on all pages, but MUST be present on the Home page
+* Clicking on a recipe title (the visible text of a link) will load a details page/screen
+  * Hint: Remember to preventDefault on links
+  * Hint: Remember to SHOW the title for any link, but not to use it as the link query parameter
+    * The id of the recipe is the query param
+* Clicking on the "New Recipe" button will show the New Recipe page/screen
+  * The "New Recipe" option is only shown for logged in users
+* If a logged in user manually reloads the page, the page should show them as logged in
+  * This should be done via a service call result, NOT by checking `document.cookies`
 
-## Q9: Explain why try/catch is useless when dealing with asynchronous errors (assume you aren't using async/await)
+### Login
+* They must provide a username to login
+* No password
+* username "dog" is treated as a bad login
+* Show useful error messages if a login is denied
+* This does not have to replace the page content visually
+  * They just must be able to login
 
-## Q10: Is separation of concerns a front end issue, a server-side issue, or both?  Describe an example the demonstrates your answer.
+### Logout 
+* They will see the Home screen after logging out
+* Another user can log in using the same browser window after someone logged out without requiring a new page load
 
+### Recipe Details
+* Displays the author, title, ingredients list, and instructions for the selected recipe
+* You can click a "Return to Home" link to return to the Home Page
+
+### New Recipe
+* Displays a form to enter the title, ingredients list, and instructions for a new recipe
+* The ingredients list is a single textarea field to enter the data
+* The instructions list a single textarea field to enter the data
+* The user is not allowed to enter a recipe without something present in all 3 fields
+* The user can click a "Return to Home" link to return to the Home Page
+* The user is put on the Recipe Details screen for the new recipe after successfully submitting a recipe.
+
+### REST Services
+
+* You will need to add REST services to fulfill the needs of the application
+* Any services calls that expect the user be logged in should enforce that requirement
+* Pick services data, methods, URLs, and status codes to match the requirements of RESTful services as described in class
+* Any request/response bodies will be in JSON (if they are present)
+* Limit username to these allowable characters: upper and lower case A-Z, numbers, and underscore
+  * Your service must return an error if a username with disallowed characters is attempted
+* The title, ingredients and instructions fields will replace all `&` with `&amp`, all `>` with `&gt;`, and all `<` with `&lt;` before storing them in memory on the server
+  * Make sure you are replacing all, not just the first one
+  * These are HTML Entities, and will make sure that someone can't send HTML in your fields (or anything that would be confused as HTML), but when shown will still look the same.  Example: `< 3 tablespoons, but > 1 tablespoon` will look exactly the same when rendered, but will not be mistaken for being HTML.
+  * You may make additional replacements/limitations on input, but these are required.
+* Store the author (username) of a new recipe, along with any created id for that recipe
+
+### Visuals
+
+* The app will be reasonably professional looking and usable
+  * Professional does not have be boring, but does have to look thought-out
+* The user must be able to understand how to navigate around the app
+* The user should be able to understand what different buttons and controls will do before they use them
+
+### Persistence
+* If you restart the server, the data is lost
+* You may pre-populate some recipes in your server data if you wish
+
+## Allowances
+* You may create your HTML as you see fit, but it must be fundamentally semantically valid and other best practices from class
+* You may create the CSS as you see fit but you must follow the best practices given in class
+* You may add icons and background images but there is no requirement to do so
+* You may use any of the node modules that have been used in class, such as webpack, babel, express, cookie-parser, uuid, nodemon, and any related modules that have been used in class.
+
+## Restrictions
+* You must provide meaningful, and where applicable, ACTIONABLE error messages for your user on the page (for service calls) 
+* You should use no external libraries of any kind save for those explicitly allowed
+* Your JS, HTML, and CSS files must uphold the best practices from class (some, but not all, are listed below)
+* You may not use floats to do more than manage flowing text with images
+* You may not use HTML tables or CSS table layouts
+* Do not have any files in your PR except for the exam (no files from other assignments, for example)
+* Do not use var
+* Do not use alert
+* Do not use terrible variable or function names
+* Do not use Map() or Set(), use plain objects instead
+* Do not have console.log debugging messages or commented out code
+* The only permitted client-side storage is a single cookie to track the login session id
+* Do not use window.location or other redirects
+* You may not use CSS preprocessors, minifiers, or other tools to modify your CSS
+* There should only be a single page load
