@@ -107,6 +107,13 @@ i {
   margin-bottom: 18px;
 }
 
+.fa-cheese {
+  font-size: 21px;
+  color: rgb(53, 155, 139);
+  cursor: pointer;
+
+}
+
 textarea {
   width: 260px;
 }

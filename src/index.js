@@ -18,6 +18,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
     const logoutAreaEl = document.querySelector('.logout-area');
     const loginPageEl = document.querySelector('.login-page');
     const createRecipeEl = document.querySelector('.create-recipe');
+    const writeRecipeEl = document.querySelector('.write-recipe');
 
     const storedRecipesEl = document.querySelector('.recipe-cards');
     const recipeSummariesEl = document.querySelector('.recipe-summaries');
@@ -73,6 +74,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
                             <h3>${recipeObjects[recipeID].title}</h3>
                             <h4>by ${recipeObjects[recipeID].author}</h4>
                             <h6>Submitted by: ${recipeObjects[recipeID].uploaded_by}</h6>
+                            <button class="form-btn" type="button">Explore Recipe</button>
                           </section>
                       </section>`).join('');                    
                       recipeSummariesEl.innerHTML = testHTML;
@@ -116,6 +118,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       logoutAreaEl.hidden = false;
       createRecipeEl.hidden = true;
       loginPageEl.hidden = true;
+      writeRecipeEl.hidden = false;
     }
 
     function showLogin() {
@@ -124,6 +127,7 @@ import { errMsgs, getHome, convertError, convertHTML } from './services';
       createRecipeEl.hidden = true;
       loginPageEl.hidden = false;
       storedRecipesEl.hidden = true;
+      writeRecipeEl.hidden = true;
     }
 
     function renderItems( userName ) {    

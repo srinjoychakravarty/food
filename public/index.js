@@ -142,6 +142,7 @@ __webpack_require__.r(__webpack_exports__);
   var logoutAreaEl = document.querySelector('.logout-area');
   var loginPageEl = document.querySelector('.login-page');
   var createRecipeEl = document.querySelector('.create-recipe');
+  var writeRecipeEl = document.querySelector('.write-recipe');
   var storedRecipesEl = document.querySelector('.recipe-cards');
   var recipeSummariesEl = document.querySelector('.recipe-summaries');
   var bodyEl = document.querySelector('.spa');
@@ -173,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
     var cardLeft = "card left";
     var cardRight = "card right";
     var testHTML = recipeIDArray.map(function (recipeID, index) {
-      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                          </section>\n                      </section>");
+      return "<section class=\"".concat(index % 2 === 0 ? cardLeft : cardRight, "\">\n                          <section class=\"container\">\n                            <h3>").concat(recipeObjects[recipeID].title, "</h3>\n                            <h4>by ").concat(recipeObjects[recipeID].author, "</h4>\n                            <h6>Submitted by: ").concat(recipeObjects[recipeID].uploaded_by, "</h6>\n                            <button class=\"form-btn\" type=\"button\">Explore Recipe</button>\n                          </section>\n                      </section>");
     }).join('');
     recipeSummariesEl.innerHTML = testHTML;
   }
@@ -222,6 +223,7 @@ __webpack_require__.r(__webpack_exports__);
     logoutAreaEl.hidden = false;
     createRecipeEl.hidden = true;
     loginPageEl.hidden = true;
+    writeRecipeEl.hidden = false;
   }
 
   function showLogin() {
@@ -230,6 +232,7 @@ __webpack_require__.r(__webpack_exports__);
     createRecipeEl.hidden = true;
     loginPageEl.hidden = false;
     storedRecipesEl.hidden = true;
+    writeRecipeEl.hidden = true;
   }
 
   function renderItems(userName) {
